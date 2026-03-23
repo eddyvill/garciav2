@@ -109,7 +109,7 @@ const Contact = () => {
 
     try {
       await emailjs.send(
-        'service_2df5hd9',
+        'default_service',
         'template_387pvca',
         templateParams,
         'tNeLQwwvMUwFa_Ihu'
