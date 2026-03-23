@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import emailjs from '@emailjs/browser';
+
+emailjs.init('tNeLQwwvMUwFa_Ihu');
 import { 
   MapPin, 
   Phone, 
