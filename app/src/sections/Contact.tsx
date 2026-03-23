@@ -100,10 +100,10 @@ const Contact = () => {
     
     try {
       await emailjs.sendForm(
-        'YOUR_SERVICE_ID',    // Reemplazar con tu Service ID de EmailJS
-        'YOUR_TEMPLATE_ID',   // Reemplazar con tu Template ID de EmailJS
+        'service_2df5hd9',
+        'template_387pvca',
         formRef.current!,
-        'YOUR_PUBLIC_KEY'     // Reemplazar con tu Public Key de EmailJS
+        'tNeLQwwvMUwFa_Ihu'
       );
       
       setIsSubmitted(true);
@@ -113,7 +113,7 @@ const Contact = () => {
           formRef.current.reset();
         }
       }, 3000);
-    } catch (error) {
+    } catch {
       alert('Error al enviar el mensaje. Intenta de nuevo.');
     } finally {
       setIsSubmitting(false);
@@ -226,7 +226,7 @@ const Contact = () => {
                 </Label>
                 <Input
                   id="email"
-                  name="reply_to"
+                  name="from_email"
                   type="email"
                   placeholder="tu@email.com"
                   required
