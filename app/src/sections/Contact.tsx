@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import emailjs from '@emailjs/browser';
 import { 
   MapPin, 
   Phone, 
@@ -100,23 +99,27 @@ const Contact = () => {
     setIsSubmitting(true);
 
     const form = formRef.current;
-    const templateParams = {
-      from_name: (form.querySelector('[name="from_name"]') as HTMLInputElement)?.value,
+    const payload = {
+      from_name:  (form.querySelector('[name="from_name"]')  as HTMLInputElement)?.value,
       from_email: (form.querySelector('[name="from_email"]') as HTMLInputElement)?.value,
-      phone: (form.querySelector('[name="phone"]') as HTMLInputElement)?.value,
-      message: (form.querySelector('[name="message"]') as HTMLTextAreaElement)?.value,
+      phone:      (form.querySelector('[name="phone"]')      as HTMLInputElement)?.value,
+      message:    (form.querySelector('[name="message"]')    as HTMLTextAreaElement)?.value,
     };
 
     try {
-      await emailjs.send(
-        'default_service',
-        'template_387pvca',
-        templateParams,
-        'tNeLQwwvMUwFa_Ihu'
-      );
-      setIsSubmitted(true);
-      form.reset();
-      setTimeout(() => setIsSubmitted(false), 3000);
+      const res = await fetch('/send-mail.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setIsSubmitted(true);
+        form.reset();
+        setTimeout(() => setIsSubmitted(false), 3000);
+      } else {
+        alert('Error al enviar el mensaje. Intenta de nuevo.');
+      }
     } catch {
       alert('Error al enviar el mensaje. Intenta de nuevo.');
     } finally {
