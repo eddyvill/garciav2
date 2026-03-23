@@ -2,8 +2,6 @@ import { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import emailjs from '@emailjs/browser';
-
-emailjs.init('tNeLQwwvMUwFa_Ihu');
 import { 
   MapPin, 
   Phone, 
@@ -98,23 +96,27 @@ const Contact = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!formRef.current) return;
     setIsSubmitting(true);
-    
+
+    const form = formRef.current;
+    const templateParams = {
+      from_name: (form.querySelector('[name="from_name"]') as HTMLInputElement)?.value,
+      from_email: (form.querySelector('[name="from_email"]') as HTMLInputElement)?.value,
+      phone: (form.querySelector('[name="phone"]') as HTMLInputElement)?.value,
+      message: (form.querySelector('[name="message"]') as HTMLTextAreaElement)?.value,
+    };
+
     try {
-      await emailjs.sendForm(
+      await emailjs.send(
         'service_2df5hd9',
         'template_387pvca',
-        formRef.current!,
+        templateParams,
         'tNeLQwwvMUwFa_Ihu'
       );
-      
       setIsSubmitted(true);
-      setTimeout(() => {
-        setIsSubmitted(false);
-        if (formRef.current) {
-          formRef.current.reset();
-        }
-      }, 3000);
+      form.reset();
+      setTimeout(() => setIsSubmitted(false), 3000);
     } catch {
       alert('Error al enviar el mensaje. Intenta de nuevo.');
     } finally {
