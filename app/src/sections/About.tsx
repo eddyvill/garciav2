@@ -1,7 +1,8 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Target, Award, Users, Lightbulb, Quote } from 'lucide-react';
+import { Award, Quote, Truck, X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Dialog, DialogContent } from '@/components/ui/dialog';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -9,6 +10,26 @@ const About = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
+  const [isGalleryOpen, setIsGalleryOpen] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  // Array de imágenes de vehículos - puedes cambiar estas rutas
+  const vehicleImages = [
+    '/Camion_cestaford.jpg',
+    '/hero-bg.jpg',
+    '/hero-bg2.jpg',
+    '/Camion_2.jpg',
+    '/Camion_3.jpg',
+     '/Camion_4.jpg',
+  ];
+
+  const nextImage = () => {
+    setCurrentImageIndex((prev) => (prev + 1) % vehicleImages.length);
+  };
+
+  const prevImage = () => {
+    setCurrentImageIndex((prev) => (prev - 1 + vehicleImages.length) % vehicleImages.length);
+  };
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -51,28 +72,6 @@ const About = () => {
     return () => ctx.revert();
   }, []);
 
-  const values = [
-    {
-      icon: Target,
-      title: 'Disciplina',
-      description: 'Rigor, cumplimiento y orden en cada proyecto',
-    },
-    {
-      icon: Award,
-      title: 'Excelencia',
-      description: 'Mejora continua y calidad garantizada',
-    },
-    {
-      icon: Lightbulb,
-      title: 'Innovación',
-      description: 'Métodos modernos y ágiles',
-    },
-    {
-      icon: Users,
-      title: 'Compromiso Social',
-      description: 'Impacto positivo en las comunidades',
-    },
-  ];
 
   return (
     <section
@@ -154,50 +153,117 @@ const About = () => {
               </p>
             </div>
 
-            {/* CTA */}
-            <a
-              href="#services"
-              onClick={(e) => {
-                e.preventDefault();
-                document.querySelector('#services')?.scrollIntoView({ behavior: 'smooth' });
-              }}
-              className="content-item inline-flex items-center gap-2 text-brand-500 hover:text-brand-400 font-semibold transition-colors group"
-            >
-              Conoce nuestros servicios
-              <span className="transform group-hover:translate-x-2 transition-transform">→</span>
-            </a>
-          </div>
-        </div>
-
-        {/* Values Section */}
-        <div className="mt-24">
-          <div className="text-center mb-12">
-            <h3 className="text-2xl sm:text-3xl font-bold text-white mb-4">
-              Nuestros Valores
-            </h3>
-            <p className="text-gray-400 max-w-2xl mx-auto">
-              Los principios que guían cada acción y decisión en nuestra empresa
-            </p>
-          </div>
-
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {values.map((value, index) => (
-              <div
-                key={index}
-                className="group bg-dark-50 border border-gray-800 hover:border-brand-500/50 rounded-2xl p-6 transition-all duration-500 hover:shadow-glow card-hover"
+            {/* CTA Buttons */}
+            <div className="content-item flex flex-wrap gap-4">
+              <a
+                href="#projects"
+                onClick={(e) => {
+                  e.preventDefault();
+                  document.querySelector('#projects')?.scrollIntoView({ behavior: 'smooth' });
+                }}
+                className="inline-flex items-center gap-2 text-brand-500 hover:text-brand-400 font-semibold transition-colors group"
               >
-                <div className="w-14 h-14 bg-brand-500/10 rounded-xl flex items-center justify-center mb-4 group-hover:bg-brand-500/20 transition-colors">
-                  <value.icon className="w-7 h-7 text-brand-500" />
-                </div>
-                <h4 className="text-xl font-semibold text-white mb-2">
-                  {value.title}
-                </h4>
-                <p className="text-gray-400 text-sm">{value.description}</p>
-              </div>
-            ))}
+                Conoce nuestros proyectos 
+                <span className="transform group-hover:translate-x-2 transition-transform">→</span>
+              </a>
+              
+              <button
+                onClick={() => setIsGalleryOpen(true)}
+                className="inline-flex items-center gap-2 bg-brand-500/10 hover:bg-brand-500/20 border border-brand-500/30 hover:border-brand-500/50 text-brand-400 hover:text-brand-300 px-6 py-3 rounded-xl font-semibold transition-all duration-300 group"
+              >
+                <Truck className="w-5 h-5" />
+                Ver Flota de Vehículos
+              </button>
+            </div>
           </div>
         </div>
+
       </div>
+
+      {/* Vehicle Gallery Modal */}
+      <Dialog open={isGalleryOpen} onOpenChange={setIsGalleryOpen}>
+        <DialogContent className="!max-w-4xl w-[90vw] sm:w-[80vw] lg:w-[70vw] max-h-[90vh] bg-dark border-gray-800 text-white p-0 overflow-hidden left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%]" showCloseButton={false}>
+          <div className="relative flex flex-col h-full max-h-[90vh]">
+            {/* Header */}
+            <div className="relative z-20 flex items-center justify-between p-6 bg-dark/95 backdrop-blur-xl border-b border-gray-800">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-brand-500/10 rounded-xl flex items-center justify-center">
+                  <Truck className="w-5 h-5 text-brand-500" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold text-white">Flota de Vehículos</h3>
+                  <p className="text-sm text-gray-400">Equipamiento profesional para cada proyecto</p>
+                </div>
+              </div>
+              <button
+                onClick={() => setIsGalleryOpen(false)}
+                className="w-10 h-10 bg-dark-50 hover:bg-brand-500 rounded-full flex items-center justify-center transition-colors"
+              >
+                <X className="w-5 h-5 text-white" />
+              </button>
+            </div>
+
+            {/* Main Image Display */}
+            <div className="relative flex-1 bg-black min-h-0">
+              <img
+                src={vehicleImages[currentImageIndex]}
+                alt={`Vehículo ${currentImageIndex + 1}`}
+                className="w-full h-full object-contain p-4"
+              />
+
+              {/* Navigation Arrows */}
+              {vehicleImages.length > 1 && (
+                <>
+                  <button
+                    onClick={prevImage}
+                    className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-dark/90 hover:bg-brand-500 rounded-full flex items-center justify-center backdrop-blur-sm transition-all duration-300 shadow-xl hover:scale-110"
+                  >
+                    <ChevronLeft className="w-6 h-6 text-white" />
+                  </button>
+                  <button
+                    onClick={nextImage}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-dark/90 hover:bg-brand-500 rounded-full flex items-center justify-center backdrop-blur-sm transition-all duration-300 shadow-xl hover:scale-110"
+                  >
+                    <ChevronRight className="w-6 h-6 text-white" />
+                  </button>
+                </>
+              )}
+
+              {/* Image Counter */}
+              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-dark/90 backdrop-blur-xl px-4 py-2 rounded-full border border-gray-700">
+                <span className="text-white font-semibold">
+                  {currentImageIndex + 1} / {vehicleImages.length}
+                </span>
+              </div>
+            </div>
+
+            {/* Thumbnail Strip */}
+            {vehicleImages.length > 1 && (
+              <div className="relative z-20 p-4 bg-dark/95 backdrop-blur-xl border-t border-gray-800">
+                <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-brand-500 scrollbar-track-gray-800">
+                  {vehicleImages.map((image, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setCurrentImageIndex(index)}
+                      className={`relative flex-shrink-0 w-24 h-20 rounded-lg overflow-hidden border-2 transition-all duration-300 ${
+                        index === currentImageIndex
+                          ? 'border-brand-500 scale-105 shadow-glow'
+                          : 'border-gray-700 hover:border-brand-500/50 opacity-60 hover:opacity-100'
+                      }`}
+                    >
+                      <img
+                        src={image}
+                        alt={`Thumbnail ${index + 1}`}
+                        className="w-full h-full object-cover"
+                      />
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
     </section>
   );
 };

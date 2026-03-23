@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { MapPin, ExternalLink, ChevronLeft, ChevronRight, X } from 'lucide-react';
+import { MapPin, ExternalLink, ChevronLeft, ChevronRight, X, FileText, Link as LinkIcon, Play } from 'lucide-react';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -16,17 +16,17 @@ interface Project {
   description: string;
   images: string[];
   details?: string[];
+  pdfUrl?: string;
+  externalLink?: string;
+  videoUrl?: string;
 }
 
 const Projects = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
-  const [activeFilter, setActiveFilter] = useState('Todos');
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [cardImageIndex, setCardImageIndex] = useState<Record<number, number>>({});
-
-  const filters = ['Todos', 'Infraestructura Eléctrica', 'Institucional', 'Educativo', 'Rehabilitación'];
 
   const projects: Project[] = [
     {
@@ -45,6 +45,9 @@ const Projects = () => {
         'Adecuación de áreas operativas',
         'Modernización de espacios administrativos'
       ],
+        pdfUrl: '/pdfs/corpoelec-cumana.pdf', 
+      externalLink: 'https://kuula.co/share/collection/7MpRy?logo=1&info=0&fs=1&vr=1&initload=0&thumbs=1',
+      videoUrl: 'https://youtu.be/z9Gwb0_Rrss',
     },
     {
       id: 2,
@@ -61,6 +64,7 @@ const Projects = () => {
         'Pintura general de instalaciones',
         'Reparación de muro perimetral'
       ],
+      pdfUrl: '/pdfs/Manzanares.pdf', 
     },
     {
       id: 3,
@@ -76,6 +80,8 @@ const Projects = () => {
         'Reparación de techos',
         'Mantenimiento de instalaciones eléctricas'
       ],
+
+        pdfUrl: '/pdfs/Araya.pdf', 
     },
     {
       id: 4,
@@ -92,6 +98,8 @@ const Projects = () => {
         'Instalaciones sanitarias',
         'Dotación de salones'
       ],
+        pdfUrl: '/pdfs/UNEXEE.pdf', 
+
     },
     {
       id: 5,
@@ -107,27 +115,26 @@ const Projects = () => {
         'Adecuación nutricional',
         'Mejoras en infraestructura'
       ],
+        pdfUrl: '/pdfs/Guanta.pdf', 
+
     },
     {
       id: 6,
-      title: 'Taller de Reparación de Transformadores',
+      title: 'Reparación de la cerca permitral de la subestación móvil El Peñón 34.5/13.8 KV Cumaná – Edo Sucre',
       category: 'Institucional',
-      location: 'Chacao, Edo. Miranda',
+      location: 'Cumaná, Edo. Sucre',
       area: '56 m²',
       duration: '3 meses',
-      description: 'Construcción de oficinas y dormitorios del taller de reparación de transformadores, ampliación y adecuación integral.',
+      description: 'El servicio realizado en la cerca perimetral de la Sub-Estación Móvil El Peñón 34.5/13.8 KV en Cumaná se ejecutó bajo un estricto protocolo de seguridad y calidad, enfocado en asegurar la integridad física de la instalación y prevenir accesos no autorizados, conforme a la normativa para infraestructuras eléctricas.',
       images: ['/project-taller.jpg', '/project-taller2.jpg'],
       details: [
         'Construcción de oficinas',
         'Dormitorios para personal',
         'Ampliación de taller'
       ],
+        pdfUrl: '/pdfs/Cercaprimetral.pdf', 
     },
   ];
-
-  const filteredProjects = activeFilter === 'Todos' 
-    ? projects 
-    : projects.filter(p => p.category === activeFilter);
 
   const nextImage = (projectId: number, e: React.MouseEvent) => {
     e.stopPropagation();
@@ -163,8 +170,6 @@ const Projects = () => {
     }
   };
 
-
-
   useEffect(() => {
     const ctx = gsap.context(() => {
       gsap.fromTo(
@@ -187,7 +192,7 @@ const Projects = () => {
     }, sectionRef);
 
     return () => ctx.revert();
-  }, [filteredProjects]);
+  }, []);
 
   return (
     <section
@@ -214,32 +219,11 @@ const Projects = () => {
             Proyectos{' '}
             <span className="gradient-text">Ejecutados</span>
           </h2>
-
-          <p className="text-gray-400 text-lg max-w-3xl mx-auto">
-            Más de 50 obras completadas con éxito en toda Venezuela
-          </p>
-        </div>
-
-        {/* Filter Buttons */}
-        <div className="flex flex-wrap justify-center gap-3 mb-12">
-          {filters.map((filter) => (
-            <button
-              key={filter}
-              onClick={() => setActiveFilter(filter)}
-              className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300 ${
-                activeFilter === filter
-                  ? 'bg-brand-500 text-white shadow-glow'
-                  : 'bg-dark-50 text-gray-400 border border-gray-800 hover:border-brand-500/50 hover:text-white'
-              }`}
-            >
-              {filter}
-            </button>
-          ))}
         </div>
 
         {/* Projects Grid */}
         <div ref={gridRef} className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-          {filteredProjects.map((project) => {
+          {projects.map((project) => {
             const currentIndex = cardImageIndex[project.id] || 0;
             return (
               <div
@@ -258,11 +242,6 @@ const Projects = () => {
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   />
                   <div className="absolute inset-0 project-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  
-                  {/* Category Badge */}
-                  <div className="absolute top-3 left-3 bg-brand-500/90 text-white px-2 py-1 rounded text-xs font-medium backdrop-blur-sm">
-                    {project.category}
-                  </div>
 
                   {/* Image Counter */}
                   {project.images.length > 1 && (
@@ -419,14 +398,6 @@ const Projects = () => {
                     </div>
                   </div>
                   
-                  {/* Category */}
-                  <div className="glass-light rounded-lg p-3 border border-white/10 mb-3">
-                    <p className="text-gray-400 text-[10px] mb-1">Categoría</p>
-                    <span className="inline-block bg-brand-500/20 text-brand-300 px-3 py-1 rounded-lg text-xs font-medium border border-brand-500/30">
-                      {selectedProject.category}
-                    </span>
-                  </div>
-                  
                   {/* Description */}
                   <div className="mb-3 flex-shrink-0">
                     <h3 className="text-white font-bold text-sm mb-2 flex items-center gap-2">
@@ -438,28 +409,42 @@ const Projects = () => {
                     </p>
                   </div>
 
-                  {/* Details - Limited */}
-                  {selectedProject.details && selectedProject.details.length > 0 && (
-                    <div className="flex-1 min-h-0">
-                      <h3 className="text-white font-bold text-sm mb-2 flex items-center gap-2">
-                        <span className="w-0.5 h-4 bg-brand-500 rounded-full" />
-                        Detalles del Proyecto
-                      </h3>
-                      <ul className="space-y-1.5">
-                        {selectedProject.details.slice(0, 4).map((detail, index) => (
-                          <li key={index} className="flex items-start gap-2 text-gray-300 text-xs group">
-                            <span className="w-4 h-4 rounded-full bg-brand-500/20 flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:bg-brand-500/30 transition-colors">
-                              <span className="w-1.5 h-1.5 bg-brand-400 rounded-full" />
-                            </span>
-                            <span className="flex-1 leading-relaxed line-clamp-2">{detail}</span>
-                          </li>
-                        ))}
-                        {selectedProject.details.length > 4 && (
-                          <li className="text-brand-400 text-[10px] italic pl-6">
-                            +{selectedProject.details.length - 4} detalles más
-                          </li>
-                        )}
-                      </ul>
+                  {/* Action Buttons - PDF, External Link and Video */}
+                  {(selectedProject.pdfUrl || selectedProject.externalLink || selectedProject.videoUrl) && (
+                    <div className="flex gap-2 mb-3">
+                      {selectedProject.pdfUrl && (
+                        <a
+                          href={selectedProject.pdfUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-brand-500/20 hover:bg-brand-500/30 border border-brand-500/30 hover:border-brand-500/50 text-brand-300 hover:text-brand-200 transition-all duration-300 text-xs font-medium"
+                        >
+                          <FileText className="w-4 h-4" />
+                          Ver PDF del Proyecto
+                        </a>
+                      )}
+                      {selectedProject.externalLink && (
+                        <a
+                          href={selectedProject.externalLink}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-brand-500/20 hover:bg-brand-500/30 border border-brand-500/30 hover:border-brand-500/50 text-brand-300 hover:text-brand-200 transition-all duration-300 text-xs font-medium"
+                        >
+                          <LinkIcon className="w-4 h-4" />
+                          Vista 360°
+                        </a>
+                      )}
+                      {selectedProject.videoUrl && (
+                        <a
+                          href={selectedProject.videoUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-red-500/20 hover:bg-red-500/30 border border-red-500/30 hover:border-red-500/50 text-red-300 hover:text-red-200 transition-all duration-300 text-xs font-medium"
+                        >
+                          <Play className="w-4 h-4" />
+                          Ver Video
+                        </a>
+                      )}
                     </div>
                   )}
                 </div>

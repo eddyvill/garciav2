@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { MapPin, Briefcase } from 'lucide-react';
+import { useTheme } from '../hooks/useTheme';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -15,38 +16,44 @@ interface StateData {
 const Coverage = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const [selectedState, setSelectedState] = useState<string | null>(null);
+  const { theme } = useTheme();
 
   const statesData: Record<string, StateData> = {
     sucre: {
       name: 'Sucre',
       projects: 8,
       description: 'Sede principal. Obras eléctricas e institucionales en Cumaná y Araya.',
-      position: { x: '70%', y: '22%' },
+      position: { x: '67%', y: '22%' }, // Extremo noreste, costa
     },
     falcon: {
       name: 'Falcón',
       projects: 3,
       description: 'Recuperación educativa en Punto Fijo (UNEXEE).',
-      position: { x: '31%', y: '17%' },
-  
+      position: { x: '37%', y: '18%' }, // Noroeste, península
     },
     anzoategui: {
       name: 'Anzoátegui',
       projects: 2,
       description: 'Centro de alimentación en Guanta.',
-      position: { x: '64%', y: '28%' },
+      position: { x: '60%', y: '30%' }, // Este, costa norte
     },
     miranda: {
       name: 'Miranda',
       projects: 2,
       description: 'Obras institucionales en Chacao.',
-      position: { x: '48%', y: '24%' },
+      position: { x: '53%', y: '24%' }, // Centro-norte, junto a D.C.
     },
     caracas: {
       name: 'Caracas',
       projects: 6,
       description: 'Obras institucionales y administrativas.',
-      position: { x: '43%', y: '21%' },
+      position: { x: '48%', y: '22%' }, // Centro-norte, D.C./Aragua
+    },
+    apure: {
+      name: 'Apure',
+      projects: 1,
+      description: 'Proyectos de infraestructura en los llanos.',
+      position: { x: '42%', y: '45%' }, // Centro-sur, llanos
     },
   };
 
@@ -93,9 +100,6 @@ const Coverage = () => {
             Cobertura y{' '}
             <span className="gradient-text">Presencia</span>
           </h2>
-          <p className="text-gray-400 text-lg max-w-3xl mx-auto">
-            Presencia activa en más de 6 estados del país con proyectos de infraestructura de alto impacto
-          </p>
         </div>
 
         {/* Map — full width */}
@@ -103,11 +107,11 @@ const Coverage = () => {
           <div className="glass rounded-3xl p-6 lg:p-8 overflow-hidden">
             <div className="relative w-full aspect-[16/9] rounded-2xl overflow-hidden shadow-2xl">
               <img
-                src="/Gemini_Generated_Image_98sz2x98sz2x98sz.jpg"
+                src={theme === 'light' ? '/Mapa-gemini.jpg' : '/Gemini_Generated_Image_98sz2x98sz2x98sz.jpg'}
                 alt="Mapa de Venezuela"
                 className="w-full h-full object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-b from-dark/40 via-dark/20 to-dark/60" />
+              <div className={`absolute inset-0 ${theme === 'light' ? '' : 'bg-gradient-to-b from-dark/40 via-dark/20 to-dark/60'}`} />
 
               {/* Markers */}
               {Object.entries(statesData).map(([key, data]) => (
@@ -119,23 +123,31 @@ const Coverage = () => {
                   onMouseLeave={() => setSelectedState(null)}
                 >
                   <div className="absolute inset-0 w-16 h-16 -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2">
-                    <div className="absolute inset-0 bg-brand-500/40 rounded-full animate-ping" />
+                    <div className={`absolute inset-0 rounded-full animate-ping ${theme === 'light' ? 'bg-brand-500/30' : 'bg-brand-500/40'}`} />
                   </div>
                   <div className={`relative w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 backdrop-blur-sm ${
                     selectedState === key
-                      ? 'bg-gradient-to-br from-brand-400 to-brand-600 shadow-glow-xl scale-125 border-2 border-white/50'
-                      : 'bg-gradient-to-br from-brand-500/90 to-brand-700/90 shadow-glow border-2 border-white/30'
+                      ? theme === 'light'
+                        ? 'bg-white shadow-lg scale-125 border-2 border-brand-500'
+                        : 'bg-gradient-to-br from-brand-400 to-brand-600 shadow-glow-xl scale-125 border-2 border-white/50'
+                      : theme === 'light'
+                        ? 'bg-white shadow-md border-2 border-brand-500/50'
+                        : 'bg-gradient-to-br from-brand-500/90 to-brand-700/90 shadow-glow border-2 border-white/30'
                   }`}>
-                    <MapPin className="w-5 h-5 text-white drop-shadow-lg" />
+                    <MapPin className={`w-5 h-5 drop-shadow-lg ${theme === 'light' ? 'text-brand-500' : 'text-white'}`} />
                   </div>
 
                   {/* Tooltip */}
                   <div className={`absolute top-full mt-2 left-1/2 -translate-x-1/2 whitespace-nowrap transition-all duration-300 ${
                     selectedState === key ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2 pointer-events-none'
                   }`}>
-                    <div className="glass-light px-3 py-1.5 rounded-xl border border-brand-500/50 shadow-glow backdrop-blur-xl">
-                      <p className="text-white font-bold text-sm">{data.name}</p>
-                      <p className="text-brand-300 text-xs font-semibold">{data.projects}+ proyectos</p>
+                    <div className={`px-3 py-1.5 rounded-xl border shadow-glow backdrop-blur-xl ${
+                      theme === 'light'
+                        ? 'bg-white border-brand-500/50'
+                        : 'glass-light border-brand-500/50'
+                    }`}>
+                      <p className={`font-bold text-sm ${theme === 'light' ? 'text-gray-800' : 'text-white'}`}>{data.name}</p>
+                      <p className="text-brand-500 text-xs font-semibold">{data.projects}+ proyectos</p>
                     </div>
                   </div>
                 </div>
@@ -189,8 +201,8 @@ const Coverage = () => {
         {/* Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto">
           {[
-            { label: 'Estados', value: '6+', icon: MapPin },
-            { label: 'Proyectos', value: '22+', icon: Briefcase },
+            { label: 'Estados', value: '7+', icon: MapPin },
+            { label: 'Proyectos', value: '24+', icon: Briefcase },
             { label: 'Ciudades', value: '10+', icon: MapPin },
             { label: 'Años', value: '10+', icon: Briefcase },
           ].map((stat, index) => (

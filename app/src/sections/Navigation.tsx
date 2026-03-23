@@ -12,7 +12,7 @@ const Navigation = () => {
       setIsScrolled(window.scrollY > 50);
       
       // Detect active section
-      const sections = ['hero', 'about', 'services', 'projects', 'coverage', 'upcoming-projects', 'contact'];
+      const sections = ['hero', 'about', 'projects', 'coverage', 'upcoming-projects', 'contact'];
       for (const section of sections) {
         const element = document.getElementById(section);
         if (element) {
@@ -40,7 +40,6 @@ const Navigation = () => {
   const navLinks = [
     { name: 'Inicio', href: '#hero', id: 'hero' },
     { name: 'Nosotros', href: '#about', id: 'about' },
-    { name: 'Servicios', href: '#services', id: 'services' },
     { name: 'Proyectos', href: '#projects', id: 'projects' },
     { name: 'Cobertura', href: '#coverage', id: 'coverage' },
     { name: 'Por Ejecutar', href: '#upcoming-projects', id: 'upcoming-projects' },
@@ -62,8 +61,8 @@ const Navigation = () => {
         ref={navRef}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ${
           isScrolled
-            ? 'py-3'
-            : 'py-6'
+            ? 'py-2'
+            : 'py-3'
         }`}
       >
         {/* Background with glassmorphism */}
@@ -94,7 +93,7 @@ const Navigation = () => {
             </a>
 
             {/* Desktop Navigation - Redesigned */}
-            <div className="hidden lg:flex items-center gap-2 bg-dark-50/50 backdrop-blur-sm rounded-full px-3 py-2 border border-white/5">
+            <div className="hidden lg:flex items-center gap-1 bg-dark-50/50 backdrop-blur-sm rounded-full px-2 py-1.5 border border-white/5">
               {navLinks.map((link) => (
                 <a
                   key={link.name}
@@ -103,7 +102,7 @@ const Navigation = () => {
                     e.preventDefault();
                     scrollToSection(link.href);
                   }}
-                  className={`relative px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-500 ${
+                  className={`relative px-4 py-2 rounded-full text-sm font-medium transition-all duration-500 whitespace-nowrap ${
                     activeSection === link.id
                       ? 'text-white'
                       : 'text-gray-400 hover:text-white'
@@ -120,19 +119,6 @@ const Navigation = () => {
 
             {/* CTA Section - Redesigned */}
             <div className="hidden lg:flex items-center gap-3">
-              {/* Phone */}
-              <a
-                href="tel:+582934322054"
-                className="group flex items-center gap-2 px-4 py-2.5 rounded-full bg-dark-50/50 backdrop-blur-sm border border-white/5 hover:border-brand-500/50 transition-all duration-300"
-              >
-                <div className="w-8 h-8 rounded-full bg-brand-500/10 flex items-center justify-center group-hover:bg-brand-500/20 transition-colors">
-                  <Phone className="w-4 h-4 text-brand-400" />
-                </div>
-                <span className="text-sm text-gray-300 group-hover:text-white transition-colors">
-                  +58 293 432 2054
-                </span>
-              </a>
-
               {/* CTA Button */}
               <a
                 href="#contact"
@@ -140,7 +126,7 @@ const Navigation = () => {
                   e.preventDefault();
                   scrollToSection('#contact');
                 }}
-                className="group relative px-6 py-2.5 rounded-full bg-gradient-to-r from-brand-500 to-brand-600 text-white text-sm font-semibold overflow-hidden transition-all duration-300 hover:shadow-glow-lg"
+                className="group relative px-6 py-2.5 rounded-full bg-gradient-to-r from-brand-500 to-brand-600 text-white text-sm font-semibold overflow-hidden transition-all duration-300 hover:shadow-glow-lg whitespace-nowrap"
               >
                 <span className="relative z-10 flex items-center gap-2">
                   Cotizar Proyecto
@@ -191,7 +177,7 @@ const Navigation = () => {
               />
             </div>
             <p className="text-gray-400 text-sm mt-2">
-              Construyendo el futuro de Venezuela
+              Construyendo el futuro 
             </p>
           </div>
 
@@ -245,7 +231,7 @@ const Navigation = () => {
               </div>
               <div>
                 <p className="text-xs text-gray-500">Llámanos</p>
-                <p className="text-white font-medium">+58 293 432 2054</p>
+                <p className="text-white font-medium"></p>
               </div>
             </a>
 

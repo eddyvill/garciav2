@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import emailjs from '@emailjs/browser';
 import { 
   MapPin, 
   Phone, 
@@ -97,19 +98,26 @@ const Contact = () => {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    setIsSubmitting(false);
-    setIsSubmitted(true);
-    
-    // Reset after 3 seconds
-    setTimeout(() => {
-      setIsSubmitted(false);
-      if (formRef.current) {
-        formRef.current.reset();
-      }
-    }, 3000);
+    try {
+      await emailjs.sendForm(
+        'YOUR_SERVICE_ID',    // Reemplazar con tu Service ID de EmailJS
+        'YOUR_TEMPLATE_ID',   // Reemplazar con tu Template ID de EmailJS
+        formRef.current!,
+        'YOUR_PUBLIC_KEY'     // Reemplazar con tu Public Key de EmailJS
+      );
+      
+      setIsSubmitted(true);
+      setTimeout(() => {
+        setIsSubmitted(false);
+        if (formRef.current) {
+          formRef.current.reset();
+        }
+      }, 3000);
+    } catch (error) {
+      alert('Error al enviar el mensaje. Intenta de nuevo.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -189,6 +197,7 @@ const Contact = () => {
                   </Label>
                   <Input
                     id="name"
+                    name="from_name"
                     placeholder="Tu nombre"
                     required
                     className="bg-dark-100 border-gray-700 text-white placeholder:text-gray-500 focus:border-brand-500 focus:ring-brand-500/20"
@@ -202,6 +211,7 @@ const Contact = () => {
                   </Label>
                   <Input
                     id="phone"
+                    name="phone"
                     type="tel"
                     placeholder="Tu teléfono"
                     className="bg-dark-100 border-gray-700 text-white placeholder:text-gray-500 focus:border-brand-500 focus:ring-brand-500/20"
@@ -216,29 +226,12 @@ const Contact = () => {
                 </Label>
                 <Input
                   id="email"
+                  name="reply_to"
                   type="email"
                   placeholder="tu@email.com"
                   required
                   className="bg-dark-100 border-gray-700 text-white placeholder:text-gray-500 focus:border-brand-500 focus:ring-brand-500/20"
                 />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="service" className="text-gray-300">
-                  <MessageSquare className="w-4 h-4 inline mr-2" />
-                  Tipo de Proyecto
-                </Label>
-                <select
-                  id="service"
-                  className="w-full h-10 px-3 rounded-md bg-dark-100 border border-gray-700 text-white text-sm focus:border-brand-500 focus:ring-1 focus:ring-brand-500/20 outline-none"
-                >
-                  <option value="">Selecciona un tipo</option>
-                  <option value="electric">Infraestructura Eléctrica</option>
-                  <option value="institutional">Espacios Institucionales</option>
-                  <option value="educational">Infraestructura Educativa</option>
-                  <option value="rehabilitation">Rehabilitación Urbana</option>
-                  <option value="other">Otro</option>
-                </select>
               </div>
 
               <div className="space-y-2">
@@ -248,6 +241,7 @@ const Contact = () => {
                 </Label>
                 <Textarea
                   id="message"
+                  name="message"
                   placeholder="Cuéntanos sobre tu proyecto..."
                   rows={4}
                   required

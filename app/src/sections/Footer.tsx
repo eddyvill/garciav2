@@ -2,9 +2,6 @@ import {
   Phone, 
   Mail, 
   MapPin, 
-  Facebook, 
-  Instagram,
-  Linkedin,
   ArrowUp
 } from 'lucide-react';
 
@@ -56,27 +53,6 @@ const Footer = () => {
               experiencia en obras civiles e infraestructura.
             </p>
 
-            {/* Social Links */}
-            <div className="flex items-center gap-3">
-              <a
-                href="#"
-                className="w-10 h-10 bg-dark-100 border border-gray-800 hover:border-brand-500 rounded-lg flex items-center justify-center text-gray-400 hover:text-brand-500 transition-all duration-300"
-              >
-                <Facebook className="w-5 h-5" />
-              </a>
-              <a
-                href="#"
-                className="w-10 h-10 bg-dark-100 border border-gray-800 hover:border-brand-500 rounded-lg flex items-center justify-center text-gray-400 hover:text-brand-500 transition-all duration-300"
-              >
-                <Instagram className="w-5 h-5" />
-              </a>
-              <a
-                href="#"
-                className="w-10 h-10 bg-dark-100 border border-gray-800 hover:border-brand-500 rounded-lg flex items-center justify-center text-gray-400 hover:text-brand-500 transition-all duration-300"
-              >
-                <Linkedin className="w-5 h-5" />
-              </a>
-            </div>
           </div>
 
           {/* Quick Links */}
@@ -168,7 +144,7 @@ const Footer = () => {
 
             <div className="flex items-center gap-6">
               <span className="text-gray-500 text-sm">
-                RIF: J-00000000-0
+                RIF: J-40546231-2
               </span>
             </div>
           </div>

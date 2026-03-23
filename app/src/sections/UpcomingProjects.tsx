@@ -1,7 +1,9 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Calendar, MapPin, TrendingUp, ArrowRight, Maximize2 } from 'lucide-react';
+import { Calendar, MapPin, TrendingUp, ArrowRight, Maximize2, X, ChevronLeft, ChevronRight, Play, FileText } from 'lucide-react';
+import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { useTheme } from '../hooks/useTheme';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -13,13 +15,20 @@ interface UpcomingProject {
   estimatedStart: string;
   description: string;
   image: string;
+  images: string[];
   status: 'por ejecutar' | 'approved' | 'starting-soon';
-  virtual360Link?: string; // Link opcional para vista 360
+  virtual360Link?: string;
+  videoLink?: string;
+  pdfUrl?: string;
+  fullDescription?: string;
 }
 
 const UpcomingProjects = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
+  const [selectedProject, setSelectedProject] = useState<UpcomingProject | null>(null);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const { theme } = useTheme();
 
   const upcomingProjects: UpcomingProject[] = [
     {
@@ -28,21 +37,28 @@ const UpcomingProjects = () => {
       category: 'Infraestructura eléctrica',
       location: 'San Fernando de apure, Estado Apure',
       estimatedStart: '1 Mes',
-      description: 'Construcción de centro comercial moderno con 50 locales comerciales y estacionamiento subterráneo.',
+      description: 'Solicitar la ejecución del servicio de remodelación y adecuación integral del galpón ubicado en la Subestación El Bosque',
       image: '/taller-apure.jpg',
       status: 'por ejecutar',
-      virtual360Link: 'https://kuula.co/share/collection/71nxp?logo=1&info=1&fs=1&vr=0&sd=1&thumbs=1'
+      virtual360Link: 'https://kuula.co/share/collection/71nxp?logo=1&info=1&fs=1&vr=0&sd=1&thumbs=1',
+      images: ['/Tallerapure_imagen.png' , '/Tallerapure_imagen2.png' ], 
+        videoLink: 'https://youtu.be/z_c6tpRp3P4',
+          pdfUrl: '/pdfs/Tallerapure.pdf',
+
     },
     {
       id: 2,
-      title: 'Construcción de taller de reparación de transformadores subestacion «El Bosque',
+      title: 'Construcción de taller de reparación de transformadores subestacion El Bosque',
       category: 'Infraestructura eléctrica',
       location: 'Sector El Bosque, autopista El Vigía – Mérida',
       estimatedStart: '1 Mes',
       description: 'Adecuación integral del galpón ubicado en la Subestación El Bosque.',
       image: '/taller-elbosque.jpg',
       status: 'por ejecutar',
-      virtual360Link: 'https://kuula.co/post/hnZJP/collection/7D4pF'
+      virtual360Link: 'https://kuula.co/post/hnZJP/collection/7D4pF',
+      images: ['/taller-elbosque.jpg'],
+              videoLink: 'https://youtu.be/uxIpBHVaP6I',
+         pdfUrl: '/pdfs/Elvigia_merida.pdf',
     },
     {
       id: 3,
@@ -54,8 +70,23 @@ const UpcomingProjects = () => {
       image: 'taller-valera.jpg',
       status: 'por ejecutar',
       virtual360Link: 'https://kuula.co/share/collection/71n66?logo=1&info=1&fs=1&vr=0&sd=1&thumbs=1',
+      images: ['taller-valera.jpg'],
+              videoLink: 'https://youtu.be/3nBAMRR238c',
+         pdfUrl: '/pdfs/Trujillo.pdf',
     },
   ];
+
+  const nextModalImage = () => {
+    if (selectedProject && selectedProject.images) {
+      setCurrentImageIndex((prev) => (prev + 1) % selectedProject.images!.length);
+    }
+  };
+
+  const prevModalImage = () => {
+    if (selectedProject && selectedProject.images) {
+      setCurrentImageIndex((prev) => (prev - 1 + selectedProject.images!.length) % selectedProject.images!.length);
+    }
+  };
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -140,8 +171,8 @@ const UpcomingProjects = () => {
             <span className="gradient-text">Ejecutar</span>
           </h2>
 
-          <p className="text-gray-400 text-lg max-w-3xl mx-auto">
-            Innovación y crecimiento en cada proyecto. Conoce las obras que transformarán el futuro.
+          <p className="text-gray-500 text-lg max-w-3xl mx-auto">
+            Innovación y crecimiento en cada proyecto
           </p>
         </div>
 
@@ -150,8 +181,12 @@ const UpcomingProjects = () => {
           {upcomingProjects.map((project) => (
             <div
               key={project.id}
-              className="upcoming-card group relative"
+              className="upcoming-card group relative cursor-pointer"
               style={{ perspective: '1000px' }}
+              onClick={() => {
+                setSelectedProject(project);
+                setCurrentImageIndex(0);
+              }}
             >
               <div className="relative bg-dark border border-gray-800 hover:border-brand-500/50 rounded-2xl overflow-hidden transition-all duration-500 hover:shadow-glow transform hover:-translate-y-2">
                 {/* Image */}
@@ -161,7 +196,9 @@ const UpcomingProjects = () => {
                     alt={project.title}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-dark via-dark/50 to-transparent" />
+                  {theme === 'dark' && (
+                    <div className="absolute inset-0 bg-gradient-to-t from-dark via-dark/50 to-transparent" />
+                  )}
                   
                   {/* Status Badge */}
                   <div className={`absolute top-4 left-4 px-3 py-1.5 rounded-lg text-xs font-medium border backdrop-blur-sm ${getStatusColor(project.status)}`}>
@@ -188,6 +225,7 @@ const UpcomingProjects = () => {
                   </p>
 
                   {/* Info Grid */}
+                  {/* Info Grid */}
                   <div className="space-y-2 mb-4">
                     <div className="flex items-center gap-2 text-gray-300 text-sm">
                       <MapPin className="w-4 h-4 text-brand-400 flex-shrink-0" />
@@ -197,10 +235,7 @@ const UpcomingProjects = () => {
                       <Calendar className="w-4 h-4 text-brand-400 flex-shrink-0" />
                       <span>Inicio estimado: {project.estimatedStart}</span>
                     </div>
-                    <div className="flex items-center gap-2 text-gray-300 text-sm">
-                      <TrendingUp className="w-4 h-4 text-brand-400 flex-shrink-0" />                    </div>
                   </div>
-
                   {/* CTA - Vista 360 */}
                   {project.virtual360Link ? (
                     <a
@@ -248,6 +283,144 @@ const UpcomingProjects = () => {
           </a>
         </div>
       </div>
+
+      {/* Project Detail Modal */}
+      <Dialog open={!!selectedProject} onOpenChange={() => setSelectedProject(null)}>
+        <DialogContent className="max-w-4xl w-[95vw] h-[95vh] bg-dark border-gray-800 text-white p-0 overflow-hidden" showCloseButton={false}>
+          {selectedProject && (
+            <div className="relative flex flex-col h-full rounded-2xl overflow-hidden bg-dark">
+              {/* Close Button */}
+              <button
+                onClick={() => setSelectedProject(null)}
+                className="absolute top-3 right-3 z-30 w-10 h-10 bg-dark/80 hover:bg-brand-500 rounded-full flex items-center justify-center backdrop-blur-sm transition-colors shadow-lg"
+              >
+                <X className="w-5 h-5 text-white" />
+              </button>
+
+              {/* Top: Image Carousel */}
+              {/* Top: Image Carousel */}
+              <div className="relative w-full h-[45%] bg-dark-50 flex-shrink-0">
+                <img
+                  src={selectedProject.images && selectedProject.images.length > 0 ? selectedProject.images[currentImageIndex] : selectedProject.image}
+                  alt={selectedProject.title}
+                  className="w-full h-full object-cover"
+                />
+
+                {/* Location Badge - Floating */}
+                <div className="absolute bottom-4 left-4 right-4 glass backdrop-blur-xl px-4 py-3 rounded-xl border border-white/20 shadow-2xl">
+                  <p className="text-gray-300 text-xs mb-1">Ubicación</p>
+                  <div className="flex items-center gap-2">
+                    <MapPin className="w-5 h-5 text-brand-400 flex-shrink-0" />
+                    <span className="text-white font-semibold text-base">{selectedProject.location}</span>
+                  </div>
+                </div>
+                
+                {/* Carousel Controls */}
+                {selectedProject.images && selectedProject.images.length > 1 && (
+                  <>
+                    <button
+                      onClick={prevModalImage}
+                      className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-dark/80 hover:bg-brand-500 rounded-full flex items-center justify-center backdrop-blur-sm transition-colors z-10 shadow-lg"
+                    >
+                      <ChevronLeft className="w-5 h-5 text-white" />
+                    </button>
+                    <button
+                      onClick={nextModalImage}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-dark/80 hover:bg-brand-500 rounded-full flex items-center justify-center backdrop-blur-sm transition-colors z-10 shadow-lg"
+                    >
+                      <ChevronRight className="w-5 h-5 text-white" />
+                    </button>
+
+                    {/* Image Indicators */}
+                    <div className="absolute top-3 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
+                      {selectedProject.images.map((_, index) => (
+                        <button
+                          key={index}
+                          onClick={() => setCurrentImageIndex(index)}
+                          className={`h-1.5 rounded-full transition-all duration-300 ${
+                            index === currentImageIndex
+                              ? 'bg-white w-6'
+                              : 'bg-white/50 hover:bg-white/80 w-1.5'
+                          }`}
+                          aria-label={`Ver imagen ${index + 1}`}
+                        />
+                      ))}
+                    </div>
+
+                    {/* Image Counter Badge */}
+                    <div className="absolute top-3 right-3 bg-dark/80 backdrop-blur-sm px-2.5 py-1 rounded-lg text-sm font-medium">
+                      {currentImageIndex + 1}/{selectedProject.images.length}
+                    </div>
+                  </>
+                )}
+              </div>
+
+              {/* Bottom: Content */}
+              <div className="relative flex-1 bg-dark overflow-y-auto">
+                <div className="p-6">
+                  {/* Title */}
+                  <h2 className="text-2xl font-bold text-white mb-6 pr-10 leading-tight">
+                    {selectedProject.title}
+                  </h2>
+                  
+                  {/* Description */}
+                  <div className="mb-6">
+                    <h3 className="text-white font-bold text-base mb-3 flex items-center gap-2">
+                      <span className="w-0.5 h-5 bg-brand-500 rounded-full" />
+                      Descripción
+                    </h3>
+                    <p className="text-gray-300 text-base leading-relaxed">
+                      {selectedProject.fullDescription || selectedProject.description}
+                    </p>
+                  </div>
+
+                  {/* Action Buttons */}
+                  <div className="space-y-3">
+                    {/* Primera fila: Vista 360 y PDF */}
+                    <div className="grid grid-cols-2 gap-3">
+                      {selectedProject.virtual360Link && (
+                        <a
+                          href={selectedProject.virtual360Link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center justify-center gap-2 px-4 py-4 rounded-xl bg-brand-500/20 hover:bg-brand-500/30 border border-brand-500/30 hover:border-brand-500/50 text-brand-300 hover:text-brand-200 transition-all duration-300 text-base font-semibold shadow-lg hover:shadow-glow"
+                        >
+                          <Maximize2 className="w-5 h-5" />
+                          Vista 360°
+                        </a>
+                      )}
+                      {selectedProject.pdfUrl && (
+                        <a
+                          href={selectedProject.pdfUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center justify-center gap-2 px-4 py-4 rounded-xl bg-brand-500/20 hover:bg-brand-500/30 border border-brand-500/30 hover:border-brand-500/50 text-brand-300 hover:text-brand-200 transition-all duration-300 text-base font-semibold shadow-lg hover:shadow-glow"
+                        >
+                          <FileText className="w-5 h-5" />
+                          Ver PDF
+                        </a>
+                      )}
+                    </div>
+                    
+                    {/* Segunda fila: Video (ocupa todo el ancho) */}
+                    {selectedProject.videoLink && (
+                      <a
+                        href={selectedProject.videoLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center justify-center gap-3 px-6 py-4 rounded-xl bg-brand-500/20 hover:bg-brand-500/30 border border-brand-500/30 hover:border-brand-500/50 text-brand-300 hover:text-brand-200 transition-all duration-300 text-base font-semibold shadow-lg hover:shadow-glow"
+                      >
+                        <Play className="w-5 h-5" />
+                        Ver Video
+                      </a>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </section>
   );
 };

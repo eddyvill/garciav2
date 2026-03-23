@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { ArrowRight, Sparkles, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -135,13 +135,13 @@ const Hero = () => {
           </div>
         ))}
         {/* Gradient Overlays */}
-        <div className="absolute inset-0 bg-gradient-to-r from-dark via-dark/85 to-dark/70" />
-        <div className="absolute inset-0 bg-gradient-to-t from-dark via-transparent to-dark/60" />
+        <div className="hero-overlay-h absolute inset-0 bg-gradient-to-r from-dark via-dark/85 to-dark/70" />
+        <div className="hero-overlay-v absolute inset-0 bg-gradient-to-t from-dark via-transparent to-dark/60" />
         <div className="absolute inset-0 bg-gradient-to-br from-brand-900/30 via-transparent to-transparent" />
       </div>
 
       {/* Animated Geometric Elements */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+      <div className="hero-decorations absolute inset-0 pointer-events-none overflow-hidden">
         <div className="float-element absolute top-1/4 right-1/4 w-96 h-96 border border-brand-500/20 rounded-full blur-sm" />
         <div className="float-element absolute top-1/3 right-1/3 w-64 h-64 border border-brand-400/15 rounded-full blur-sm" style={{ animationDelay: '1s' }} />
         <div className="float-element absolute top-1/2 right-1/5 w-32 h-32 bg-brand-500/10 rounded-full blur-3xl" style={{ animationDelay: '2s' }} />
@@ -161,12 +161,6 @@ const Hero = () => {
         className="relative z-10 w-full px-6 lg:px-12 pt-32 pb-16 will-change-transform"
       >
         <div className="max-w-5xl">
-          <div className="hero-item inline-flex items-center gap-2 glass-light rounded-full px-5 py-2.5 mb-8 glow-pulse">
-            <Sparkles className="w-4 h-4 text-brand-400 animate-pulse" />
-            <span className="text-brand-300 text-sm font-semibold tracking-wide">
-              Construcción & Infraestructura de Excelencia
-            </span>
-          </div>
 
           <h1
             ref={titleRef}
@@ -177,8 +171,6 @@ const Hero = () => {
             <span className="word inline-block" style={{ transformOrigin: 'bottom' }}>el</span>{' '}
             <span className="word inline-block gradient-text" style={{ transformOrigin: 'bottom' }}>Futuro</span>
             <br />
-            <span className="word inline-block" style={{ transformOrigin: 'bottom' }}>de</span>{' '}
-            <span className="word inline-block" style={{ transformOrigin: 'bottom' }}>Venezuela</span>
           </h1>
 
           <p className="hero-item text-xl sm:text-2xl text-gray-300 max-w-3xl mb-10 leading-relaxed font-light">
@@ -266,7 +258,7 @@ const Hero = () => {
       </div>
 
       {/* Bottom gradient fade */}
-      <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-dark to-transparent pointer-events-none z-20" />
+      <div className="hero-overlay-bottom absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-dark to-transparent pointer-events-none z-20" />
 
       {/* Scroll indicator */}
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 animate-bounce">
