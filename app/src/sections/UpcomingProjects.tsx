@@ -3,7 +3,6 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Calendar, MapPin, TrendingUp, ArrowRight, Maximize2, X, ChevronLeft, ChevronRight, Play, FileText } from 'lucide-react';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
-import { useTheme } from '../hooks/useTheme';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -28,7 +27,6 @@ const UpcomingProjects = () => {
   const cardsRef = useRef<HTMLDivElement>(null);
   const [selectedProject, setSelectedProject] = useState<UpcomingProject | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const { theme } = useTheme();
 
   const upcomingProjects: UpcomingProject[] = [
     {
@@ -74,6 +72,46 @@ const UpcomingProjects = () => {
               videoLink: 'https://youtu.be/3nBAMRR238c',
          pdfUrl: '/pdfs/Trujillo.pdf',
     },
+    {
+      id: 4,
+      title: 'Adecuación de Container para Oficina de Atención al Usuario en CORPOELEC Carúpano',
+      category: 'Infraestructura eléctrica',
+      location: 'Carúpano, Edo. Sucre',
+      estimatedStart: '1 Mes',
+      description: 'Adecuación de container para oficina de atención al usuario en CORPOELEC Carúpano.',
+      image: '/Container.jpg',
+      status: 'por ejecutar',
+      images: ['/Container.jpg', '/Container2.jpg', '/Container3.jpg'],
+      pdfUrl: '/pdfs/ADECUACION DE CONTAINER PARA ATENCION AL USUARIO, CORPOELEC, CAURPANO.pdf',
+      virtual360Link: 'https://kuula.co/share/hzStW/collection/7HF9l?logo=1&card=1&info=1&logosize=56&fs=1&vr=1&zoom=1&sd=1&initload=0&thumbs=1&inst=es',
+    },
+    {
+      id: 5,
+      title: 'Remodelación de Oficinas del Ministerio del Poder Popular para la Energia Eléctrica  ',
+      category: 'Infraestructura eléctrica',
+      location: 'Nº 18 Av. Gamboa, Caracas 1011, Distrito Capital, Venezuela',
+      estimatedStart: '1 Mes',
+      description: 'Remodelación integral de oficinas, incluyendo adecuación de espacios y mejoras en infraestructura.',
+      image: '/Remodelaciondeoficina.jpg',
+      status: 'por ejecutar',
+      images: ['/Remodelaciondeoficina.jpg', '/Remodelaciondeoficina2.jpg','/Remodelaciondeoficina3.jpg', '/Remodelaciondeoficina34.jpg'],
+      pdfUrl: '/pdfs/REMODELACION-OFICINAS.pdf',
+      virtual360Link: 'https://kuula.co/share/collection/71Rpw?logo=0&info=0&fs=1&vr=1&sd=1&initload=0&thumbs=1',
+
+    },
+    {
+      id: 6,
+      title: 'Ampliación y Remodelación de Sala 1x10 DEL EDIFICIO SEDE DE CORPOELEC, PUERTO LA CRUZ, ESTADO ANZOÁTEGUI',
+      category: 'Infraestructura eléctrica',
+      location: 'Piso 2, Edif. Sede CORPOELEC, Puerto la Cruz',
+      estimatedStart: '1 Mes',
+      description: 'Ampliación y remodelación de sala 1x10, incluyendo trabajos de infraestructura civil y adecuación de espacios.',
+      image: '/Sala1x10-2.jpg',
+      status: 'por ejecutar',
+      images: ['/Sala1x10.jpg', '/Sala1x10-2.jpg', '/Sala1x10-3.jpg'],
+      pdfUrl: '/pdfs/AMPLIACION-Y-REMODELACION-SALA-1X10.pdf',
+      virtual360Link: 'https://kuula.co/share/collection/7HLYC?logo=0&info=0&fs=1&vr=1&sd=1&initload=0&thumbs=1',
+    },
   ];
 
   const nextModalImage = () => {
@@ -88,31 +126,7 @@ const UpcomingProjects = () => {
     }
   };
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'starting-soon':
-        return 'bg-green-500/20 text-green-400 border-green-500/30';
-      case 'approved':
-        return 'bg-blue-500/20 text-blue-400 border-blue-500/30';
-      case 'planning':
-        return 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30';
-      default:
-        return 'bg-gray-500/20 text-gray-400 border-gray-500/30';
-    }
-  };
 
-  const getStatusText = (status: string) => {
-    switch (status) {
-      case 'starting-soon':
-        return 'Próximamente';
-      case 'approved':
-        return 'Aprobado';
-      case 'planning':
-        return 'En Planificación';
-      default:
-        return status;
-    }
-  };
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -149,7 +163,7 @@ const UpcomingProjects = () => {
     <section
       id="upcoming-projects"
       ref={sectionRef}
-      className="relative w-full py-24 lg:py-32 bg-dark-50"
+      className="relative w-full py-16 lg:py-20 bg-dark-50"
     >
       {/* Background */}
       <div className="absolute inset-0 pointer-events-none">
@@ -196,20 +210,8 @@ const UpcomingProjects = () => {
                     alt={project.title}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   />
-                  {theme === 'dark' && (
-                    <div className="absolute inset-0 bg-gradient-to-t from-dark via-dark/50 to-transparent" />
-                  )}
+                  {/* Remove dark overlay - clean image */}
                   
-                  {/* Status Badge */}
-                  <div className={`absolute top-4 left-4 px-3 py-1.5 rounded-lg text-xs font-medium border backdrop-blur-sm ${getStatusColor(project.status)}`}>
-                    {getStatusText(project.status)}
-                  </div>
-
-                  {/* Category Badge */}
-                  <div className="absolute top-4 right-4 bg-dark/80 backdrop-blur-sm px-3 py-1.5 rounded-lg text-xs font-medium text-white border border-white/10">
-                    {project.category}
-                  </div>
-
                   {/* Hover Overlay */}
                   <div className="absolute inset-0 bg-brand-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 </div>

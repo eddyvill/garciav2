@@ -11,6 +11,7 @@ interface StateData {
   projects: number;
   description: string;
   position: { x: string; y: string };
+  section: 'projects' | 'upcoming-projects';
 }
 
 const Coverage = () => {
@@ -23,37 +24,43 @@ const Coverage = () => {
       name: 'Sucre',
       projects: 8,
       description: 'Sede principal. Obras eléctricas e institucionales en Cumaná y Araya.',
-      position: { x: '67%', y: '22%' }, // Extremo noreste, costa
+      position: { x: '67%', y: '22%' },
+      section: 'projects',
     },
     falcon: {
       name: 'Falcón',
       projects: 3,
       description: 'Recuperación educativa en Punto Fijo (UNEXEE).',
-      position: { x: '37%', y: '18%' }, // Noroeste, península
+      position: { x: '37%', y: '18%' },
+      section: 'projects',
     },
     anzoategui: {
       name: 'Anzoátegui',
       projects: 2,
       description: 'Centro de alimentación en Guanta.',
-      position: { x: '60%', y: '30%' }, // Este, costa norte
+      position: { x: '60%', y: '30%' },
+      section: 'projects',
     },
     miranda: {
       name: 'Miranda',
       projects: 2,
       description: 'Obras institucionales en Chacao.',
-      position: { x: '53%', y: '24%' }, // Centro-norte, junto a D.C.
+      position: { x: '53%', y: '24%' },
+      section: 'projects',
     },
     caracas: {
       name: 'Caracas',
       projects: 6,
       description: 'Obras institucionales y administrativas.',
-      position: { x: '48%', y: '22%' }, // Centro-norte, D.C./Aragua
+      position: { x: '48%', y: '22%' },
+      section: 'upcoming-projects',
     },
     apure: {
       name: 'Apure',
       projects: 1,
       description: 'Proyectos de infraestructura en los llanos.',
-      position: { x: '42%', y: '45%' }, // Centro-sur, llanos
+      position: { x: '42%', y: '45%' },
+      section: 'upcoming-projects',
     },
   };
 
@@ -186,6 +193,9 @@ const Coverage = () => {
               }`}
               onMouseEnter={() => setSelectedState(key)}
               onMouseLeave={() => setSelectedState(null)}
+              onClick={() => {
+                document.querySelector(`#${data.section}`)?.scrollIntoView({ behavior: 'smooth' });
+              }}
             >
               <div className={`w-2 h-2 rounded-full transition-colors ${selectedState === key ? 'bg-brand-400' : 'bg-gray-600'}`} />
               <span className="font-medium text-sm">{data.name}</span>

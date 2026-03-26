@@ -237,7 +237,7 @@ const Navigation = () => {
 
             {/* Email */}
             <a
-              href="mailto:garciaconstrucciones503.c.a@gmail.com"
+              href="mailto:info@garciaconstrucciones503.com"
               className="flex items-center gap-3 p-4 rounded-xl bg-dark-50/30 hover:bg-dark-50/50 transition-all duration-300 group"
             >
               <div className="w-10 h-10 rounded-full bg-brand-500/10 flex items-center justify-center group-hover:bg-brand-500/20 transition-colors">
@@ -245,7 +245,7 @@ const Navigation = () => {
               </div>
               <div>
                 <p className="text-xs text-gray-500">Email</p>
-                <p className="text-white font-medium text-sm">garciaconstrucciones503.c.a@gmail.com</p>
+                <p className="text-white font-medium text-sm">info@garciaconstrucciones503.com</p>
               </div>
             </a>
 

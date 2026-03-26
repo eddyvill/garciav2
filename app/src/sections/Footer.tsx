@@ -35,17 +35,11 @@ const Footer = () => {
           {/* Company Info */}
           <div className="lg:col-span-1">
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-12 h-12 bg-brand-500 rounded-xl flex items-center justify-center">
-                <span className="text-white font-bold text-xl">GC</span>
-              </div>
-              <div>
-                <span className="text-white font-semibold text-sm block">
-                  GARCÍA
-                </span>
-                <span className="text-brand-500 font-bold text-sm">
-                  CONSTRUCCIONES 503
-                </span>
-              </div>
+              <img 
+                src="/logo-full-gris (1).png" 
+                alt="García Construcciones 503" 
+                className="h-12 w-auto brightness-110"
+              />
             </div>
 
             <p className="text-gray-400 text-sm leading-relaxed mb-6">
@@ -123,10 +117,10 @@ const Footer = () => {
               <li className="flex items-center gap-3">
                 <Mail className="w-5 h-5 text-brand-500 flex-shrink-0" />
                 <a
-                  href="mailto:garciaconstrucciones503.c.a@gmail.com"
+                  href="mailto:info@garciaconstrucciones503.com"
                   className="text-gray-400 hover:text-brand-500 text-sm transition-colors"
                 >
-                  garciaconstrucciones503.c.a@gmail.com
+                  info@garciaconstrucciones503.com
                 </a>
               </li>
             </ul>

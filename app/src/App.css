@@ -32,6 +32,12 @@ html.lenis {
   box-sizing: border-box;
 }
 
+/* Prevent horizontal overflow on mobile */
+html, body {
+  overflow-x: hidden;
+  width: 100%;
+}
+
 /* Selection color with brand color */
 ::selection {
   background-color: rgba(45, 53, 114, 0.4);
@@ -49,6 +55,14 @@ img {
   max-width: 100%;
   height: auto;
   display: block;
+}
+
+/* Hero carousel images need to fill their container */
+#hero .absolute.inset-0 img {
+  max-width: none;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
 }
 
 /* Prevent text selection on interactive elements */
@@ -260,6 +274,25 @@ select {
 @media (max-width: 640px) {
   html {
     font-size: 14px;
+  }
+
+  /* Ensure hero fills viewport on mobile */
+  #hero {
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
+
+  /* Hero images must cover full area on mobile */
+  #hero .absolute.inset-0 img {
+    width: 100% !important;
+    height: 100% !important;
+    max-width: none !important;
+    object-fit: cover !important;
+  }
+
+  /* Prevent content overflow on mobile */
+  #hero .max-w-5xl {
+    max-width: 100%;
   }
 }
 

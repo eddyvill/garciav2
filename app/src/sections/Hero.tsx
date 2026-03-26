@@ -164,7 +164,7 @@ const Hero = () => {
 
           <h1
             ref={titleRef}
-            className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold text-white leading-tight mb-8"
+            className="text-4xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold text-white leading-tight mb-8"
             style={{ perspective: '1000px' }}
           >
             <span className="word inline-block" style={{ transformOrigin: 'bottom' }}>Construyendo</span>{' '}
@@ -173,15 +173,15 @@ const Hero = () => {
             <br />
           </h1>
 
-          <p className="hero-item text-xl sm:text-2xl text-gray-300 max-w-3xl mb-10 leading-relaxed font-light">
+          <p className="hero-item text-lg sm:text-2xl text-gray-300 max-w-3xl mb-10 leading-relaxed font-light">
             Más de una década de experiencia en obras civiles, infraestructura eléctrica
             y espacios institucionales. <span className="text-brand-300 font-medium">Creamos espacios dignos, funcionales y sostenibles.</span>
           </p>
 
-          <div className="hero-item flex flex-wrap gap-5 mb-16">
+          <div className="hero-item flex flex-col sm:flex-row flex-wrap gap-4 sm:gap-5 mb-16">
             <button
               onClick={scrollToProjects}
-              className="group relative bg-brand-500 hover:bg-brand-600 text-white px-10 py-5 rounded-2xl font-semibold text-lg transition-all duration-500 hover:shadow-glow-xl flex items-center gap-3 btn-shine overflow-hidden"
+              className="group relative bg-brand-500 hover:bg-brand-600 text-white px-8 py-4 sm:px-10 sm:py-5 rounded-2xl font-semibold text-base sm:text-lg transition-all duration-500 hover:shadow-glow-xl flex items-center justify-center gap-3 btn-shine overflow-hidden"
             >
               <span className="relative z-10">Ver Proyectos</span>
               <ArrowRight className="relative z-10 w-5 h-5 transform group-hover:translate-x-2 transition-transform duration-300" />
@@ -193,13 +193,13 @@ const Hero = () => {
                 e.preventDefault();
                 document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' });
               }}
-              className="group glass border-2 border-brand-500/30 hover:border-brand-500 text-white px-10 py-5 rounded-2xl font-semibold text-lg transition-all duration-500 hover:bg-brand-500/10 backdrop-blur-sm"
+              className="group glass border-2 border-brand-500/30 hover:border-brand-500 text-white px-8 py-4 sm:px-10 sm:py-5 rounded-2xl font-semibold text-base sm:text-lg transition-all duration-500 hover:bg-brand-500/10 backdrop-blur-sm text-center"
             >
               Contáctanos
             </a>
           </div>
 
-          <div className="hero-item grid grid-cols-3 gap-8 sm:gap-12">
+          <div className="hero-item grid grid-cols-3 gap-4 sm:gap-8 sm:gap-12">
             {[
               { number: '10', suffix: '+', label: 'Años de Experiencia' },
               { number: '50', suffix: '+', label: 'Proyectos Ejecutados' },
@@ -207,10 +207,10 @@ const Hero = () => {
             ].map((stat, index) => (
               <div key={index} className="group text-center sm:text-left">
                 <div className="flex items-baseline justify-center sm:justify-start gap-1 mb-2">
-                  <span className="text-4xl sm:text-5xl lg:text-6xl font-bold text-brand-400 group-hover:text-brand-300 transition-colors duration-300">
+                  <span className="text-3xl sm:text-5xl lg:text-6xl font-bold text-brand-400 group-hover:text-brand-300 transition-colors duration-300">
                     {stat.number}
                   </span>
-                  <span className="text-3xl sm:text-4xl lg:text-5xl font-bold text-brand-500 group-hover:text-brand-400 transition-colors duration-300">
+                  <span className="text-2xl sm:text-4xl lg:text-5xl font-bold text-brand-500 group-hover:text-brand-400 transition-colors duration-300">
                     {stat.suffix}
                   </span>
                 </div>

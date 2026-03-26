@@ -40,7 +40,7 @@ const Clients = () => {
     <section
       id="clients"
       ref={sectionRef}
-      className="relative w-full py-20 bg-dark-50 overflow-hidden"
+      className="relative w-full py-12 bg-dark-50 overflow-hidden"
     >
       {/* Background glow */}
       <div className="absolute inset-0 pointer-events-none">

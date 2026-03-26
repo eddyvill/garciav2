@@ -16,11 +16,13 @@ const About = () => {
   // Array de imágenes de vehículos - puedes cambiar estas rutas
   const vehicleImages = [
     '/Camion_cestaford.jpg',
-    '/hero-bg.jpg',
-    '/hero-bg2.jpg',
+    '/Camion_5.jpg',
+    '/Camion_6.jpg',
     '/Camion_2.jpg',
     '/Camion_3.jpg',
      '/Camion_4.jpg',
+       '/Camion_7.jpg',
+        '/Camion_8.jpg',
   ];
 
   const nextImage = () => {

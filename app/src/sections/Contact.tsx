@@ -41,7 +41,7 @@ const Contact = () => {
     {
       icon: Mail,
       title: 'Correo Electrónico',
-      content: 'garciaconstrucciones503.c.a@gmail.com',
+      content: 'info@garciaconstrucciones503.com',
       subContent: '',
     },
     {
