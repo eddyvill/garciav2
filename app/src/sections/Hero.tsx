@@ -142,10 +142,10 @@ const Hero = () => {
 
       {/* Animated Geometric Elements */}
       <div className="hero-decorations absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="float-element absolute top-1/4 right-1/4 w-96 h-96 border border-brand-500/20 rounded-full blur-sm" />
-        <div className="float-element absolute top-1/3 right-1/3 w-64 h-64 border border-brand-400/15 rounded-full blur-sm" style={{ animationDelay: '1s' }} />
-        <div className="float-element absolute top-1/2 right-1/5 w-32 h-32 bg-brand-500/10 rounded-full blur-3xl" style={{ animationDelay: '2s' }} />
-        <div className="float-element absolute bottom-1/3 left-1/4 w-48 h-48 bg-brand-600/10 rounded-full blur-3xl" style={{ animationDelay: '1.5s' }} />
+        <div className="float-element absolute top-1/4 right-1/4 w-48 sm:w-96 h-48 sm:h-96 border border-brand-500/20 rounded-full blur-sm" />
+        <div className="float-element absolute top-1/3 right-1/3 w-32 sm:w-64 h-32 sm:h-64 border border-brand-400/15 rounded-full blur-sm" style={{ animationDelay: '1s' }} />
+        <div className="float-element absolute top-1/2 right-[10%] sm:right-1/5 w-20 sm:w-32 h-20 sm:h-32 bg-brand-500/10 rounded-full blur-3xl" style={{ animationDelay: '2s' }} />
+        <div className="float-element absolute bottom-1/3 left-[10%] sm:left-1/4 w-24 sm:w-48 h-24 sm:h-48 bg-brand-600/10 rounded-full blur-3xl" style={{ animationDelay: '1.5s' }} />
         <div className="absolute bottom-1/4 left-1/4 w-px h-40 bg-gradient-to-b from-transparent via-brand-500/40 to-transparent" />
         <div className="absolute top-1/3 right-1/3 w-px h-32 bg-gradient-to-b from-transparent via-brand-400/30 to-transparent" />
         <div className="absolute inset-0 opacity-5"

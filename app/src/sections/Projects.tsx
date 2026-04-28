@@ -207,7 +207,7 @@ const Projects = () => {
 
   return (
     <section id="projects" ref={sectionRef} className="relative w-full py-24 lg:py-32 bg-dark">
-      <div className="absolute inset-0 pointer-events-none">
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] bg-brand-500/5 rounded-full blur-3xl" />
       </div>
 

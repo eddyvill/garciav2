@@ -92,8 +92,8 @@ const Coverage = () => {
       className="relative w-full py-24 lg:py-32 bg-dark-50"
     >
       {/* Background */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1200px] h-[1200px] bg-brand-500/5 rounded-full blur-3xl" />
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] sm:w-[1200px] h-[600px] sm:h-[1200px] bg-brand-500/5 rounded-full blur-3xl" />
       </div>
 
       <div className="relative z-10 w-full px-6 lg:px-12">

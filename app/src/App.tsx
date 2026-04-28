@@ -1,9 +1,12 @@
-import { useEffect } from 'react';
+import { useEffect, Suspense, lazy } from 'react';
+import { Routes, Route } from 'react-router-dom';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Sun, Moon } from 'lucide-react';
+import { Toaster } from 'sonner';
 import { useSmoothScroll } from './hooks/useSmoothScroll';
 import { useTheme } from './hooks/useTheme';
+import { AuthProvider } from './gestion/context/AuthContext';
 import Navigation from './sections/Navigation';
 import Hero from './sections/Hero';
 import About from './sections/About';
@@ -17,7 +20,10 @@ import './App.css';
 
 gsap.registerPlugin(ScrollTrigger);
 
-function App() {
+const GestionApp = lazy(() => import('./gestion/GestionApp'));
+const LoginPage = lazy(() => import('./gestion/pages/LoginPage'));
+
+function LandingPage() {
   useSmoothScroll();
   const { theme, toggleTheme } = useTheme();
 
@@ -35,7 +41,7 @@ function App() {
   }, []);
 
   return (
-    <div className="relative min-h-screen bg-dark">
+    <div className="relative min-h-screen bg-dark overflow-x-hidden">
       {/* Grain Overlay */}
       <div className="grain-overlay" />
 
@@ -65,6 +71,44 @@ function App() {
       {/* Footer */}
       <Footer />
     </div>
+  );
+}
+
+function App() {
+  return (
+    <AuthProvider>
+      <Toaster
+        position="top-right"
+        theme="dark"
+        richColors
+        toastOptions={{
+          style: {
+            background: 'rgba(30, 30, 30, 0.9)',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
+            color: '#fff',
+          },
+        }}
+      />
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route
+          path="/login"
+          element={
+            <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-dark text-white">Cargando...</div>}>
+              <LoginPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/gestion/*"
+          element={
+            <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-dark text-white">Cargando...</div>}>
+              <GestionApp />
+            </Suspense>
+          }
+        />
+      </Routes>
+    </AuthProvider>
   );
 }
 

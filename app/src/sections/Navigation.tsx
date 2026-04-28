@@ -1,11 +1,14 @@
 import { useState, useEffect, useRef } from 'react';
-import { Phone, Mail, ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Phone, Mail, ArrowRight, Settings } from 'lucide-react';
+import { useAuth } from '../gestion/context/AuthContext';
 
 const Navigation = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('hero');
   const navRef = useRef<HTMLElement>(null);
+  const { user } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -119,6 +122,15 @@ const Navigation = () => {
 
             {/* CTA Section - Redesigned */}
             <div className="hidden lg:flex items-center gap-3">
+              {/* Gestión Link */}
+              <Link
+                to={user ? '/gestion' : '/login'}
+                className="flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium text-gray-400 hover:text-white transition-all duration-300 hover:bg-white/5"
+              >
+                <Settings className="w-4 h-4" />
+                Gestión
+              </Link>
+
               {/* CTA Button */}
               <a
                 href="#contact"
@@ -216,6 +228,21 @@ const Navigation = () => {
                   }`} />
                 </a>
               ))}
+            </div>
+
+            {/* Gestión Link - Mobile */}
+            <div className="mt-4">
+              <Link
+                to={user ? '/gestion' : '/login'}
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="group flex items-center justify-between px-6 py-4 rounded-2xl bg-dark-50/30 hover:bg-dark-50/50 transition-all duration-300"
+              >
+                <span className="flex items-center gap-2 text-lg font-semibold text-gray-300 group-hover:text-white">
+                  <Settings className="w-5 h-5 text-brand-400" />
+                  Gestión
+                </span>
+                <ArrowRight className="w-5 h-5 text-gray-500 -translate-x-2 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transform transition-all duration-300" />
+              </Link>
             </div>
           </div>
 
