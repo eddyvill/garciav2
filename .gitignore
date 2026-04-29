@@ -1,8 +1,7 @@
 # Dependencies
 node_modules/
 
-# Build output
-app/dist/
+# Build output (dist/ se incluye en el repo para deploy en producción)
 
 # Environment variables
 .env

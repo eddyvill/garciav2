@@ -1,0 +1,8 @@
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /garciav2/
+
+  # Redirigir todo a app/dist/
+  RewriteCond %{REQUEST_URI} !^/garciav2/app/dist/
+  RewriteRule ^(.*)$ app/dist/$1 [L]
+</IfModule>
