@@ -58,7 +58,7 @@ const Projects = () => {
       area: '198 m²',
       duration: '3 meses',
       description: 'Servicio y mantenimiento de climatización, instalaciones eléctricas, pintura general, adecuación de baños y reparación de muro perimetral.',
-      images: ['/project-subestacion-manzanares.jpg', '/project-subestacion2.jpg'],
+      images: ['/Manzares_portada.png','/project-subestacion-manzanares.jpg', '/project-subestacion2.jpg'],
       details: [
         'Mantenimiento de sistema de climatización',
         'Actualización de instalaciones eléctricas',
@@ -98,7 +98,7 @@ const Projects = () => {
         'Instalaciones sanitarias',
         'Dotación de salones'
       ],
-      pdfUrl: '/pdfs/UNEXEE.pdf',
+      pdfUrl: '/pdfs/UNEXEE2.pdf',
     },
     {
       id: 7,
@@ -108,7 +108,7 @@ const Projects = () => {
       area: '200 m²',
       duration: '4 meses',
       description: 'Mantenimiento y rehabilitación de la subestación Chuparín 108MVA-11/13.8KV, incluyendo trabajos de infraestructura civil, sistemas eléctricos y adecuación de espacios operativos.',
-      images: ['/Chuparin-1.jpg', '/Chuparin-2.jpg'],
+      images: ['/Chuparin-portada.jpg','/Chuparin-1.jpg', '/Chuparin-2.jpg'],
       details: [
         'Rehabilitación de infraestructura civil',
         'Mantenimiento de sistemas eléctricos',
@@ -119,6 +119,40 @@ const Projects = () => {
       videoUrl: 'https://youtu.be/cZI0TnbsTF0',
     },
     {
+      id: 10,
+      title: 'Subestación Casanay',
+      category: 'Infraestructura Eléctrica',
+      location: 'Casanay, Edo. Sucre',
+      area: '180 m²',
+      duration: '3 meses',
+      description: 'Construcción y puesta en marcha de subestación eléctrica, incluyendo obra civil, montaje de equipos y sistemas de protección.',
+      images: ['/Casanay_portada.png','/project-subestacion-manzanares.jpg', '/project-subestacion2.jpg'],
+      details: [
+        'Obra civil para subestación',
+        'Montaje de equipos eléctricos',
+        'Sistemas de protección',
+        'Pruebas y puesta en marcha'
+      ],
+      pdfUrl: '/pdfs/Casanay.pdf',
+    },
+    {
+      id: 11,
+      title: 'Estacionamiento Sede CORPOELEC',
+      category: 'Infraestructura',
+      location: 'Cumaná, Edo. Sucre',
+      area: '500 m²',
+      duration: '2 meses',
+      description: 'Construcción de estacionamiento para la sede de CORPOELEC, incluyendo pavimentación, señalización y sistemas de drenaje.',
+      images: ['/Estacionamiento1.png','/Estacionamiento2.png','/Estacionamiento3.png'],
+      details: [
+        'Pavimentación de áreas',
+        'Señalización horizontal y vertical',
+        'Sistema de drenaje pluvial',
+        'Iluminación de áreas comunes'
+      ],
+      pdfUrl: '/pdfs/Estacionamiento.pdf',
+    },
+    {
       id: 5,
       title: 'Centro de Alimentación Guanta',
       category: 'Rehabilitación',
@@ -126,7 +160,7 @@ const Projects = () => {
       area: '38 m²',
       duration: '3 meses',
       description: 'Ampliación y adecuación de espacios del centro de alimentación nutricional en la planta de generación.',
-      images: ['/project-alimentacion-guanta.jpg'],
+      images: ['PORTADA_GUANTA.jpg', '/project-alimentacion-guanta.jpg'],
       details: [
         'Ampliación de espacios',
         'Adecuación nutricional',
@@ -135,21 +169,39 @@ const Projects = () => {
       pdfUrl: '/pdfs/Guanta.pdf',
     },
     {
-      id: 6,
-      title: 'Reparación de la cerca perimetral de la subestación móvil El Peñón 34.5/13.8 KV Cumaná – Edo Sucre',
+      id: 8,
+      title: 'Centro de Atención integral al usuario Cariaco (CIAU)',
       category: 'Institucional',
-      location: 'Cumaná, Edo. Sucre',
+      location: 'Sede CORPOELEC Cariaco, Edo. Sucre',
       area: '56 m²',
       duration: '3 meses',
-      description: 'El servicio realizado en la cerca perimetral de la Sub-Estación Móvil El Peñón 34.5/13.8 KV en Cumaná se ejecutó bajo un estricto protocolo de seguridad y calidad, enfocado en asegurar la integridad física de la instalación y prevenir accesos no autorizados, conforme a la normativa para infraestructuras eléctricas.',
-      images: ['/project-taller.jpg', '/project-taller2.jpg'],
+      description: ' Mantenimiento e impermeablización del centro de Atención integral al usuario Cariaco (CIAU).',
+      images: ['/Cariaco1.png', '/Cariaco2.png'],
       details: [
         'Construcción de oficinas',
         'Dormitorios para personal',
         'Ampliación de taller'
       ],
-      pdfUrl: '/pdfs/Cercaprimetral.pdf',
+      pdfUrl: '/pdfs/Cariaco_2.pdf',
     },
+    {
+      id: 9,
+      title: 'Adecuación de la Sede CORPOELEC ARAYA',
+      category: 'Institucional',
+      location: 'Cumaná, Edo. Sucre',
+      area: '250 m²',
+      duration: '2 meses',
+      description: 'Adecuación y modernización de las instalaciones de la sede de CORPOELEC, incluyendo mejoras en infraestructura, sistemas eléctricos y áreas administrativas.',
+      images: ['/Nueva-araya3.png', '/Nueva-araya.png', '/Nueva-araya2.png'],
+      details: [
+        'Modernización de instalaciones',
+        'Mejoras en infraestructura',
+        'Actualización de sistemas eléctricos',
+        'Renovación de áreas administrativas'
+      ],
+      pdfUrl: '/pdfs/Araya2.3.pdf',
+      videoUrl: 'https://youtu.be/tJ03m6y4gO8',
+    }
   ];
 
   const nextImage = (projectId: number, e: React.MouseEvent) => {
@@ -223,52 +275,26 @@ const Projects = () => {
         </div>
 
         <div ref={gridRef} className="max-w-7xl mx-auto">
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {projects.slice(0, 4).map((project) => {
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 justify-items-center">
+            {projects.map((project, index) => {
               const currentIndex = cardImageIndex[project.id] || 0;
+              const isLastTwo = index >= projects.length - 2;
+              
+              // Para los últimos 2 proyectos: los posicionamos para que queden centrados
+              // En un grid de 4 columnas, los últimos 2 proyectos deben empezar en columna 2
+              let gridClass = '';
+              if (isLastTwo) {
+                // Si es el penúltimo proyecto, empieza en columna 2
+                // Si es el último proyecto, empieza en columna 3
+                if (index === projects.length - 2) {
+                  gridClass = 'lg:col-start-2';
+                } else if (index === projects.length - 1) {
+                  gridClass = 'lg:col-start-3';
+                }
+              }
+              
               return (
-                <div key={project.id} className="project-card group relative bg-dark-50 border border-gray-800 hover:border-brand-500/50 rounded-2xl overflow-hidden cursor-pointer transition-all duration-500 card-hover"
-                  onClick={() => { setSelectedProject(project); setCurrentImageIndex(0); }}>
-                  <div className="relative h-48 overflow-hidden">
-                    <img src={project.images[currentIndex]} alt={project.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
-                    <div className="absolute inset-0 project-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                    {project.images.length > 1 && (
-                      <div className="absolute top-3 right-3 bg-dark/80 text-white px-2 py-1 rounded text-xs font-medium backdrop-blur-sm">
-                        {currentIndex + 1}/{project.images.length}
-                      </div>
-                    )}
-                    {project.images.length > 1 && (
-                      <>
-                        <button onClick={(e) => prevImage(project.id, e)} className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-dark/80 hover:bg-brand-500 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 backdrop-blur-sm z-10">
-                          <ChevronLeft className="w-5 h-5 text-white" />
-                        </button>
-                        <button onClick={(e) => nextImage(project.id, e)} className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-dark/80 hover:bg-brand-500 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 backdrop-blur-sm z-10">
-                          <ChevronRight className="w-5 h-5 text-white" />
-                        </button>
-                      </>
-                    )}
-                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <div className="w-12 h-12 bg-brand-500 rounded-full flex items-center justify-center shadow-glow">
-                        <ExternalLink className="w-5 h-5 text-white" />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="p-4">
-                    <h3 className="text-white font-semibold mb-2 line-clamp-2 group-hover:text-brand-500 transition-colors">{project.title}</h3>
-                    <div className="flex items-center gap-1 text-gray-400 text-sm">
-                      <MapPin className="w-4 h-4 text-brand-500" />
-                      <span className="truncate">{project.location}</span>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-          <div className="flex justify-center gap-6 mt-6">
-            {projects.slice(4).map((project) => {
-              const currentIndex = cardImageIndex[project.id] || 0;
-              return (
-                <div key={project.id} className="project-card group relative bg-dark-50 border border-gray-800 hover:border-brand-500/50 rounded-2xl overflow-hidden cursor-pointer transition-all duration-500 card-hover w-full sm:w-[calc(50%-12px)] lg:w-[calc(25%-18px)]"
+                <div key={project.id} className={`project-card group relative bg-dark-50 border border-gray-800 hover:border-brand-500/50 rounded-2xl overflow-hidden cursor-pointer transition-all duration-500 card-hover ${gridClass}`}
                   onClick={() => { setSelectedProject(project); setCurrentImageIndex(0); }}>
                   <div className="relative h-48 overflow-hidden">
                     <img src={project.images[currentIndex]} alt={project.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />

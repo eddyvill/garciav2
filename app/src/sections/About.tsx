@@ -11,27 +11,97 @@ const About = () => {
   const imageRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const [isGalleryOpen, setIsGalleryOpen] = useState(false);
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [aboutCarouselIndex, setAboutCarouselIndex] = useState(0);
+  const [vehicleGalleryIndex, setVehicleGalleryIndex] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(true);
 
-  // Array de imágenes de vehículos - puedes cambiar estas rutas
-  const vehicleImages = [
-    '/Camion_cestaford.jpg',
-    '/Camion_5.jpg',
-    '/Camion_6.jpg',
-    '/Camion_2.jpg',
-    '/Camion_3.jpg',
-     '/Camion_4.jpg',
-       '/Camion_7.jpg',
-        '/Camion_8.jpg',
+  // Array de imágenes para el carrusel de la sección ABOUT (14 imágenes)
+  const aboutCarouselImages = [
+    '/C1.png',
+    '/C2.png',
+    '/C3.png',
+    '/C4.png',
+    '/C5.png',
+    '/C6.png',
+    '/C7.png',
+    '/C10.png',
+    '/C11.png',
+    '/C12.png',
+    '/C13.png',
+    '/C14.png',
+    '/C15.png',
   ];
 
+  // Array de imágenes de vehículos - imágenes numeradas del 1 al 15
+  const vehicleImages = [
+    '/1.png',
+    '/2.png',
+    '/3.png',
+    '/4.png',
+    '/5.png',
+    '/6.png',
+    '/7.png',
+    '/8.png',
+    '/9.png',
+    '/10.png',
+    '/11.png',
+    '/12.png',
+    '/13.png',
+    '/14.png',
+    '/15.png',
+  ];
+
+  // Funciones para el carrusel ABOUT
+  const nextCarouselImage = () => {
+    setAboutCarouselIndex((prev) => (prev + 1) % aboutCarouselImages.length);
+  };
+
+  const prevCarouselImage = () => {
+    setAboutCarouselIndex((prev) => (prev - 1 + aboutCarouselImages.length) % aboutCarouselImages.length);
+  };
+
+  const goToCarouselImage = (index: number) => {
+    setAboutCarouselIndex(index);
+  };
+
+  // Funciones para la galería de vehículos
   const nextImage = () => {
-    setCurrentImageIndex((prev) => (prev + 1) % vehicleImages.length);
+    setVehicleGalleryIndex((prev) => (prev + 1) % vehicleImages.length);
   };
 
   const prevImage = () => {
-    setCurrentImageIndex((prev) => (prev - 1 + vehicleImages.length) % vehicleImages.length);
+    setVehicleGalleryIndex((prev) => (prev - 1 + vehicleImages.length) % vehicleImages.length);
   };
+
+  // Efecto para autoplay del carrusel ABOUT
+  useEffect(() => {
+    let intervalId: ReturnType<typeof setInterval>;
+
+    if (isPlaying) {
+      intervalId = setInterval(() => {
+        setAboutCarouselIndex((prev) => (prev + 1) % aboutCarouselImages.length);
+      }, 3000); // Cambia cada 3 segundos
+    }
+
+    return () => {
+      if (intervalId) clearInterval(intervalId);
+    };
+  }, [isPlaying, aboutCarouselImages.length]);
+
+  // Efecto para autoplay del carrusel de vehículos
+  useEffect(() => {
+    let intervalId: ReturnType<typeof setInterval>;
+
+    if (isPlaying) {
+      intervalId = setInterval(() => {
+        setVehicleGalleryIndex((prev) => (prev + 1) % vehicleImages.length);
+      }, 3000); // Cambia cada 3 segundos
+    }
+
+    return () => {
+      if (intervalId) clearInterval(intervalId);
+    };
+  }, [isPlaying, vehicleImages.length]);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -92,17 +162,70 @@ const About = () => {
           {/* Image Column */}
           <div ref={imageRef} className="relative">
             <div className="relative overflow-hidden rounded-2xl">
-              <img
-                src="/about-image.jpg"
-                alt="Equipo García Construcciones"
-                className="w-full h-[500px] lg:h-[600px] object-cover"
-              />
-              {/* Overlay gradient */}
-              <div className="absolute inset-0 bg-gradient-to-t from-dark/80 via-transparent to-transparent" />
+              {/* Carrusel de imágenes */}
+              <div className="relative w-full h-[500px] lg:h-[600px] overflow-hidden rounded-2xl">
+                {/* Imagen actual del carrusel */}
+                <img
+                  src={aboutCarouselImages[aboutCarouselIndex]}
+                  alt={`Imagen ${aboutCarouselIndex + 1} de García Construcciones`}
+                  className="w-full h-full object-cover transition-opacity duration-500"
+                />
+                
+                {/* Overlay gradient */}
+                <div className="absolute inset-0 bg-gradient-to-t from-dark/80 via-transparent to-transparent" />
+                
+                {/* Controles del carrusel */}
+                <div className="absolute inset-0 flex items-center justify-between p-4">
+                  {/* Botón izquierdo */}
+                  <button
+                    onClick={prevCarouselImage}
+                    onMouseEnter={() => setIsPlaying(false)}
+                    onMouseLeave={() => setIsPlaying(true)}
+                    className="w-12 h-12 bg-dark/80 hover:bg-brand-500 rounded-full flex items-center justify-center backdrop-blur-sm transition-all duration-300 shadow-xl hover:scale-110 z-20"
+                  >
+                    <ChevronLeft className="w-6 h-6 text-white" />
+                  </button>
+                  
+                  {/* Botón derecho */}
+                  <button
+                    onClick={nextCarouselImage}
+                    onMouseEnter={() => setIsPlaying(false)}
+                    onMouseLeave={() => setIsPlaying(true)}
+                    className="w-12 h-12 bg-dark/80 hover:bg-brand-500 rounded-full flex items-center justify-center backdrop-blur-sm transition-all duration-300 shadow-xl hover:scale-110 z-20"
+                  >
+                    <ChevronRight className="w-6 h-6 text-white" />
+                  </button>
+                </div>
+                
+                {/* Indicadores (dots) - OCULTOS */}
+                <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex gap-2 z-20 hidden">
+                  {aboutCarouselImages.map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => goToCarouselImage(index)}
+                      onMouseEnter={() => setIsPlaying(false)}
+                      onMouseLeave={() => setIsPlaying(true)}
+                      className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                        index === aboutCarouselIndex
+                          ? 'bg-brand-500 scale-125'
+                          : 'bg-white/50 hover:bg-white/80'
+                      }`}
+                      aria-label={`Ir a imagen ${index + 1}`}
+                    />
+                  ))}
+                </div>
+                
+                {/* Contador de imágenes */}
+                <div className="absolute bottom-4 left-4 bg-dark/80 backdrop-blur-xl px-3 py-1 rounded-full border border-gray-700 z-20">
+                  <span className="text-white text-sm font-semibold">
+                    {aboutCarouselIndex + 1} / {aboutCarouselImages.length}
+                  </span>
+                </div>
+              </div>
             </div>
 
             {/* Floating Stats Card */}
-            <div className="absolute -bottom-6 -right-6 lg:right-8 bg-dark-50 border border-gray-800 rounded-2xl p-6 shadow-2xl">
+            <div className="absolute -bottom-6 -right-6 lg:right-8 bg-dark-50 border border-gray-800 rounded-2xl p-6 shadow-2xl z-10">
               <div className="flex items-center gap-4">
                 <div className="w-14 h-14 bg-brand-500/10 rounded-xl flex items-center justify-center">
                   <Award className="w-7 h-7 text-brand-500" />
@@ -157,23 +280,11 @@ const About = () => {
 
             {/* CTA Buttons */}
             <div className="content-item flex flex-wrap gap-4">
-              <a
-                href="#projects"
-                onClick={(e) => {
-                  e.preventDefault();
-                  document.querySelector('#projects')?.scrollIntoView({ behavior: 'smooth' });
-                }}
-                className="inline-flex items-center gap-2 text-brand-500 hover:text-brand-400 font-semibold transition-colors group"
-              >
-                Conoce nuestros proyectos 
-                <span className="transform group-hover:translate-x-2 transition-transform">→</span>
-              </a>
-              
               <button
                 onClick={() => setIsGalleryOpen(true)}
-                className="inline-flex items-center gap-2 bg-brand-500/10 hover:bg-brand-500/20 border border-brand-500/30 hover:border-brand-500/50 text-brand-400 hover:text-brand-300 px-6 py-3 rounded-xl font-semibold transition-all duration-300 group"
+                className="inline-flex items-center gap-3 bg-brand-500/10 hover:bg-brand-500/20 border border-brand-500/30 hover:border-brand-500/50 text-brand-400 hover:text-brand-300 px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 group"
               >
-                <Truck className="w-5 h-5" />
+                <Truck className="w-6 h-6" />
                 Ver Flota de Vehículos
               </button>
             </div>
@@ -182,87 +293,159 @@ const About = () => {
 
       </div>
 
-      {/* Vehicle Gallery Modal */}
+      {/* Professional Vehicle Gallery Modal - Clean Light Design */}
       <Dialog open={isGalleryOpen} onOpenChange={setIsGalleryOpen}>
-        <DialogContent className="!max-w-4xl w-[90vw] sm:w-[80vw] lg:w-[70vw] max-h-[90vh] bg-dark border-gray-800 text-white p-0 overflow-hidden left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%]" showCloseButton={false}>
-          <div className="relative flex flex-col h-full max-h-[90vh]">
-            {/* Header */}
-            <div className="relative z-20 flex items-center justify-between p-6 bg-dark/95 backdrop-blur-xl border-b border-gray-800">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-brand-500/10 rounded-xl flex items-center justify-center">
-                  <Truck className="w-5 h-5 text-brand-500" />
+        <DialogContent className="!max-w-7xl w-[98vw] sm:w-[96vw] lg:w-[94vw] h-[98vh] max-h-[98vh] bg-white/95 backdrop-blur-2xl border border-gray-200/50 shadow-2xl p-0 overflow-hidden left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%]" showCloseButton={false}>
+          {/* Dark Blur Background (85% opacity) */}
+          <div className="absolute inset-0 bg-black/85 backdrop-blur-3xl -z-10" />
+          
+          <div className="relative h-full max-h-[98vh] flex flex-col">
+            {/* Professional Header */}
+            <div className="relative z-30 flex items-center justify-between p-6 bg-white/90 backdrop-blur-xl border-b border-gray-200/60">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-md">
+                  <Truck className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold text-white">Flota de Vehículos</h3>
-                  <p className="text-sm text-gray-400">Equipamiento profesional para cada proyecto</p>
+                  <h3 className="text-2xl font-bold text-gray-900 font-sans">Flota de Vehículos</h3>
+                  <p className="text-sm text-gray-600 font-sans mt-1">
+                    {vehicleGalleryIndex + 1} de {vehicleImages.length} imágenes
+                  </p>
                 </div>
               </div>
               <button
                 onClick={() => setIsGalleryOpen(false)}
-                className="w-10 h-10 bg-dark-50 hover:bg-brand-500 rounded-full flex items-center justify-center transition-colors"
+                className="w-11 h-11 bg-white hover:bg-gray-100 rounded-full flex items-center justify-center shadow-md border border-gray-200/60 transition-all duration-300 hover:scale-105 hover:shadow-lg"
               >
-                <X className="w-5 h-5 text-white" />
+                <X className="w-5 h-5 text-gray-700" />
               </button>
             </div>
 
-            {/* Main Image Display */}
-            <div className="relative flex-1 bg-black min-h-0">
-              <img
-                src={vehicleImages[currentImageIndex]}
-                alt={`Vehículo ${currentImageIndex + 1}`}
-                className="w-full h-full object-contain p-4"
-              />
-
-              {/* Navigation Arrows */}
-              {vehicleImages.length > 1 && (
-                <>
-                  <button
-                    onClick={prevImage}
-                    className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-dark/90 hover:bg-brand-500 rounded-full flex items-center justify-center backdrop-blur-sm transition-all duration-300 shadow-xl hover:scale-110"
-                  >
-                    <ChevronLeft className="w-6 h-6 text-white" />
-                  </button>
-                  <button
-                    onClick={nextImage}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-dark/90 hover:bg-brand-500 rounded-full flex items-center justify-center backdrop-blur-sm transition-all duration-300 shadow-xl hover:scale-110"
-                  >
-                    <ChevronRight className="w-6 h-6 text-white" />
-                  </button>
-                </>
-              )}
-
-              {/* Image Counter */}
-              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-dark/90 backdrop-blur-xl px-4 py-2 rounded-full border border-gray-700">
-                <span className="text-white font-semibold">
-                  {currentImageIndex + 1} / {vehicleImages.length}
-                </span>
-              </div>
-            </div>
-
-            {/* Thumbnail Strip */}
-            {vehicleImages.length > 1 && (
-              <div className="relative z-20 p-4 bg-dark/95 backdrop-blur-xl border-t border-gray-800">
-                <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-brand-500 scrollbar-track-gray-800">
-                  {vehicleImages.map((image, index) => (
-                    <button
-                      key={index}
-                      onClick={() => setCurrentImageIndex(index)}
-                      className={`relative flex-shrink-0 w-24 h-20 rounded-lg overflow-hidden border-2 transition-all duration-300 ${
-                        index === currentImageIndex
-                          ? 'border-brand-500 scale-105 shadow-glow'
-                          : 'border-gray-700 hover:border-brand-500/50 opacity-60 hover:opacity-100'
-                      }`}
-                    >
-                      <img
-                        src={image}
-                        alt={`Thumbnail ${index + 1}`}
-                        className="w-full h-full object-cover"
-                      />
-                    </button>
-                  ))}
+            {/* Main Content Area */}
+            <div className="flex-1 flex flex-col lg:flex-row p-6 gap-6 min-h-0">
+              {/* Control Panel - Left Sidebar with Vertical Preview Cards */}
+              <div className="lg:w-64 flex-shrink-0">
+                <div className="bg-white/90 backdrop-blur-sm rounded-2xl border border-gray-200/50 shadow-lg p-3 h-full">
+                  
+                  {/* Vertical Preview Cards Container - Compact */}
+                  <div className="overflow-y-auto h-full scrollbar-thin scrollbar-thumb-blue-500 scrollbar-track-gray-100/50">
+                    <div className="space-y-2 pr-1">
+                      {vehicleImages.map((image, index) => {
+                        const isCurrent = index === vehicleGalleryIndex;
+                        return (
+                          <button
+                            key={index}
+                            onClick={() => setVehicleGalleryIndex(index)}
+                            className={`w-full flex flex-col p-3 rounded-xl transition-all duration-300 transform hover:-translate-y-0.5 ${
+                              isCurrent
+                                ? 'bg-gradient-to-r from-blue-50 to-blue-100/50 border-2 border-blue-500/30 shadow-md'
+                                : 'bg-white/80 hover:bg-gray-50/90 border border-gray-200/60 hover:border-blue-300/50'
+                            }`}
+                          >
+                            {/* Preview Card Header - No Numbers */}
+                            <div className="flex items-center justify-center mb-2">
+                              {isCurrent && (
+                                <span className="text-xs bg-blue-500 text-white px-2 py-1 rounded-full font-medium">
+                                  Actual
+                                </span>
+                              )}
+                            </div>
+                            
+                            {/* Smaller Stylized Thumbnail - No Numbers */}
+                            <div className="relative w-full h-20 rounded-lg overflow-hidden shadow-sm">
+                              <img
+                                src={image}
+                                alt={`Vehículo ${index + 1}`}
+                                className="w-full h-full object-cover"
+                              />
+                              {/* Overlay gradient */}
+                              <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent" />
+                            </div>
+                            
+                            {/* Card Footer - Removed text */}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
                 </div>
               </div>
-            )}
+
+              {/* Main Image Display Area */}
+              <div className="flex-1 flex flex-col items-center justify-center min-h-0">
+                <div className="relative w-full max-w-5xl">
+                  {/* Main Image Container - Clean Professional Design */}
+                  <div className="relative bg-white rounded-3xl overflow-hidden shadow-2xl border border-gray-200/40 flex items-center justify-center p-8">
+                    <div className="relative w-full h-full flex items-center justify-center">
+                      <img
+                        src={vehicleImages[vehicleGalleryIndex]}
+                        alt={`Vehículo ${vehicleGalleryIndex + 1}`}
+                        className="max-w-full max-h-[75vh] object-contain"
+                      />
+                    </div>
+                    
+                    {/* Professional Navigation Arrows */}
+                    {vehicleImages.length > 1 && (
+                      <>
+                        <button
+                          onClick={prevImage}
+                          onMouseEnter={() => setIsPlaying(false)}
+                          onMouseLeave={() => setIsPlaying(true)}
+                          className="absolute left-6 top-1/2 -translate-y-1/2 w-14 h-14 bg-white/95 hover:bg-blue-50 rounded-full flex items-center justify-center backdrop-blur-sm transition-all duration-300 shadow-xl hover:scale-110 z-20 border border-gray-200/60"
+                        >
+                          <ChevronLeft className="w-7 h-7 text-gray-700" />
+                        </button>
+                        
+                        <button
+                          onClick={nextImage}
+                          onMouseEnter={() => setIsPlaying(false)}
+                          onMouseLeave={() => setIsPlaying(true)}
+                          className="absolute right-6 top-1/2 -translate-y-1/2 w-14 h-14 bg-white/95 hover:bg-blue-50 rounded-full flex items-center justify-center backdrop-blur-sm transition-all duration-300 shadow-xl hover:scale-110 z-20 border border-gray-200/60"
+                        >
+                          <ChevronRight className="w-7 h-7 text-gray-700" />
+                        </button>
+                      </>
+                    )}
+                    
+                    {/* Professional Image Counter */}
+                    <div className="absolute bottom-6 left-6 bg-white/95 backdrop-blur-xl px-5 py-3 rounded-full border border-gray-200/60 shadow-lg">
+                      <span className="text-gray-900 font-semibold text-lg font-sans">
+                        {vehicleGalleryIndex + 1} / {vehicleImages.length}
+                      </span>
+                    </div>
+                    
+                    {/* Autoplay Control - Icon Only */}
+                    <div className="absolute bottom-6 right-6">
+                      <button
+                        onClick={() => setIsPlaying(!isPlaying)}
+                        className="w-12 h-12 bg-white/95 backdrop-blur-xl rounded-full border border-gray-200/60 shadow-lg hover:shadow-xl transition-all duration-300 hover:bg-blue-50/80 flex items-center justify-center"
+                        title={isPlaying ? 'Pausar autoplay' : 'Reanudar autoplay'}
+                      >
+                        <div className={`w-3 h-3 rounded-full ${isPlaying ? 'bg-green-500 animate-pulse' : 'bg-amber-500'}`} />
+                      </button>
+                    </div>
+                  </div>
+                  
+
+                  
+                  {/* Progress Dots - Minimalist */}
+                  <div className="flex justify-center gap-2 mt-6">
+                    {vehicleImages.map((_, index) => (
+                      <button
+                        key={index}
+                        onClick={() => setVehicleGalleryIndex(index)}
+                        className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                          index === vehicleGalleryIndex
+                            ? 'bg-blue-600 scale-150'
+                            : 'bg-gray-400 hover:bg-gray-600'
+                        }`}
+                        aria-label={`Ir a imagen ${index + 1}`}
+                      />
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </DialogContent>
       </Dialog>

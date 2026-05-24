@@ -9,6 +9,8 @@ const clients = [
   { id: 1, name: 'CORPOELEC', src: '/logo-corpoelec.png' },
   { id: 2, name: 'PDVSA',     src: '/logo-pdvsa.png' },
   { id: 3, name: 'Cliente 3', src: '/logo-cliente3.png' },
+  { id: 4, name: 'FUNSASEN',  src: '/logo_funsasen.png' },
+  { id: 5, name: 'UNEXEE',    src: '/LOGO UNEXEE-2.png' },
 ];
 
 const Clients = () => {
@@ -66,17 +68,19 @@ const Clients = () => {
         {/* Logos */}
         <div
           ref={logosRef}
-          className="flex flex-wrap items-center justify-center gap-8 lg:gap-16"
+          className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6 lg:gap-8 max-w-5xl mx-auto"
         >
           {clients.map(({ id, name, src }) => (
             <div
               key={id}
-              className="client-logo group flex items-center justify-center w-56 h-28 bg-dark border border-gray-800 hover:border-brand-500/40 rounded-2xl px-8 transition-all duration-300 hover:shadow-glow"
+              className="client-logo group flex items-center justify-center w-full h-32 bg-dark border border-gray-800 hover:border-brand-500/40 rounded-2xl px-6 transition-all duration-300 hover:shadow-glow"
             >
               <img
                 src={src}
                 alt={name}
-                className="max-h-16 max-w-full object-contain opacity-60 group-hover:opacity-100 grayscale group-hover:grayscale-0 transition-all duration-300"
+                className={`max-h-20 max-w-full object-contain opacity-60 group-hover:opacity-100 grayscale group-hover:grayscale-0 transition-all duration-300 ${
+                  name === 'FUNSASEN' ? 'dark:brightness-125 dark:contrast-125' : ''
+                }`}
               />
             </div>
           ))}

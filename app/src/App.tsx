@@ -10,6 +10,7 @@ import { AuthProvider } from './gestion/context/AuthContext';
 import Navigation from './sections/Navigation';
 import Hero from './sections/Hero';
 import About from './sections/About';
+import Services from './sections/Services';
 import Projects from './sections/Projects';
 import Coverage from './sections/Coverage';
 import Clients from './sections/Clients';
@@ -61,6 +62,7 @@ function LandingPage() {
       <main>
         <Hero />
         <About />
+        <Services />
         <Projects />
         <Coverage />
         <Clients />
