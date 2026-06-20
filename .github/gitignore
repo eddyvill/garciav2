@@ -1,0 +1,11 @@
+# Secrets and sensitive files
+.env
+.env.local
+.env.*.local
+
+# Node modules
+node_modules
+
+# Build artifacts (generados en VPS)
+dist
+*.log
