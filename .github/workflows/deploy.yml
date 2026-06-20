@@ -44,7 +44,7 @@ jobs:
             cd $DEPLOY_PATH
             git pull origin main
             cd app
-            npm ci --frozen-lockfile
+            npm install  # Changed from ci to install
             npm run build
         env:
           DEPLOY_PATH: ${{ secrets.DEPLOY_PATH || '/var/www/garciaconstrucciones503' }}
