@@ -28,7 +28,6 @@ const Projects = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [cardImageIndex, setCardImageIndex] = useState<Record<number, number>>({});
 
-
   const projects: Project[] = [
     {
       id: 1,
@@ -38,7 +37,7 @@ const Projects = () => {
       area: '1.500 m²',
       duration: '4 meses',
       description: 'Rehabilitación integral del edificio sede de CORPOELEC en Cumaná, incluyendo impermeabilización, reacondicionamiento eléctrico, restauración estructural, áreas operativas y administrativas.',
-      images: ['/project-corpoelec-cumana.jpg', '/project-corpoelec-cumana2.jpg'],
+      images: ['/project-corpoelec-cumana.webp', '/project-corpoelec-cumana2.webp'],
       details: [
         'Impermeabilización completa de techos',
         'Reacondicionamiento del sistema eléctrico',
@@ -58,7 +57,7 @@ const Projects = () => {
       area: '198 m²',
       duration: '3 meses',
       description: 'Servicio y mantenimiento de climatización, instalaciones eléctricas, pintura general, adecuación de baños y reparación de muro perimetral.',
-      images: ['/Manzares_portada.png','/project-subestacion-manzanares.jpg', '/project-subestacion2.jpg'],
+      images: ['/Manzares_portada.webp','/project-subestacion-manzanares.webp', '/project-subestacion2.webp'],
       details: [
         'Mantenimiento de sistema de climatización',
         'Actualización de instalaciones eléctricas',
@@ -75,7 +74,7 @@ const Projects = () => {
       area: '61 m²',
       duration: '1 mes',
       description: 'Mantenimiento de áreas internas y externas, recuperación de infraestructura deteriorada, techos, paredes e instalaciones eléctricas.',
-      images: ['/project-subestacion-araya.jpg', '/project-subestacion-araya5.jpg'],
+      images: ['/project-subestacion-araya.webp', '/project-subestacion-araya5.webp'],
       details: [
         'Recuperación de infraestructura',
         'Reparación de techos',
@@ -85,13 +84,29 @@ const Projects = () => {
     },
     {
       id: 4,
+      title: 'Centro de Alimentación Guanta',
+      category: 'Rehabilitación',
+      location: 'Guanta, Edo. Anzoátegui',
+      area: '38 m²',
+      duration: '3 meses',
+      description: 'Ampliación y adecuación de espacios del centro de alimentación nutricional en la planta de generación.',
+      images: ['PORTADA_GUANTA.webp', '/project-alimentacion-guanta.webp'],
+      details: [
+        'Ampliación de espacios',
+        'Adecuación nutricional',
+        'Mejoras en infraestructura'
+      ],
+      pdfUrl: '/pdfs/Guanta.pdf',
+    },
+    {
+      id: 12,
       title: 'UNEXEE Núcleo Falcón',
       category: 'Educativo',
       location: 'Punto Fijo, Edo. Falcón',
       area: '150 m²',
       duration: '3 meses',
       description: 'Adecuación de espacios internos y externos, cubierta, rehabilitación de fachadas, climatización, instalaciones sanitarias y dotación de salones.',
-      images: ['/project-unexee.jpg', '/project-unexee2.jpg'],
+      images: ['/project-unexee.webp', '/project-unexee2.webp'],
       details: [
         'Rehabilitación de fachadas',
         'Sistema de climatización',
@@ -104,11 +119,11 @@ const Projects = () => {
       id: 7,
       title: 'Subestación Chuparín 108MVA-11/13.8KV',
       category: 'Infraestructura Eléctrica',
-      location: 'Edo. Sucre',
+      location: 'Puerto la Cruz, Edo. Anzoátegui',
       area: '200 m²',
       duration: '4 meses',
       description: 'Mantenimiento y rehabilitación de la subestación Chuparín 108MVA-11/13.8KV, incluyendo trabajos de infraestructura civil, sistemas eléctricos y adecuación de espacios operativos.',
-      images: ['/Chuparin-portada.jpg','/Chuparin-1.jpg', '/Chuparin-2.jpg'],
+      images: ['/Chuparin-portada.webp','/Chuparin-1.webp', '/Chuparin-2.webp'],
       details: [
         'Rehabilitación de infraestructura civil',
         'Mantenimiento de sistemas eléctricos',
@@ -126,7 +141,7 @@ const Projects = () => {
       area: '180 m²',
       duration: '3 meses',
       description: 'Construcción y puesta en marcha de subestación eléctrica, incluyendo obra civil, montaje de equipos y sistemas de protección.',
-      images: ['/Casanay_portada.png','/project-subestacion-manzanares.jpg', '/project-subestacion2.jpg'],
+      images: ['/Casanay_portada.webp','/project-subestacion-manzanares.webp', '/project-subestacion2.webp'],
       details: [
         'Obra civil para subestación',
         'Montaje de equipos eléctricos',
@@ -143,7 +158,7 @@ const Projects = () => {
       area: '500 m²',
       duration: '2 meses',
       description: 'Construcción de estacionamiento para la sede de CORPOELEC, incluyendo pavimentación, señalización y sistemas de drenaje.',
-      images: ['/Estacionamiento1.png','/Estacionamiento2.png','/Estacionamiento3.png'],
+      images: ['/Estacionamiento1.webp','/Estacionamiento2.webp','/Estacionamiento3.webp'],
       details: [
         'Pavimentación de áreas',
         'Señalización horizontal y vertical',
@@ -153,30 +168,14 @@ const Projects = () => {
       pdfUrl: '/pdfs/Estacionamiento.pdf',
     },
     {
-      id: 5,
-      title: 'Centro de Alimentación Guanta',
-      category: 'Rehabilitación',
-      location: 'Guanta, Edo. Anzoátegui',
-      area: '38 m²',
-      duration: '3 meses',
-      description: 'Ampliación y adecuación de espacios del centro de alimentación nutricional en la planta de generación.',
-      images: ['PORTADA_GUANTA.jpg', '/project-alimentacion-guanta.jpg'],
-      details: [
-        'Ampliación de espacios',
-        'Adecuación nutricional',
-        'Mejoras en infraestructura'
-      ],
-      pdfUrl: '/pdfs/Guanta.pdf',
-    },
-    {
       id: 8,
       title: 'Centro de Atención integral al usuario Cariaco (CIAU)',
       category: 'Institucional',
-      location: 'Sede CORPOELEC Cariaco, Edo. Sucre',
+      location: 'Cariaco, Edo. Sucre',
       area: '56 m²',
       duration: '3 meses',
       description: ' Mantenimiento e impermeablización del centro de Atención integral al usuario Cariaco (CIAU).',
-      images: ['/Cariaco1.png', '/Cariaco2.png'],
+      images: ['/Cariaco1.webp', '/Cariaco2.webp'],
       details: [
         'Construcción de oficinas',
         'Dormitorios para personal',
@@ -192,7 +191,7 @@ const Projects = () => {
       area: '250 m²',
       duration: '2 meses',
       description: 'Adecuación y modernización de las instalaciones de la sede de CORPOELEC, incluyendo mejoras en infraestructura, sistemas eléctricos y áreas administrativas.',
-      images: ['/Nueva-araya3.png', '/Nueva-araya.png', '/Nueva-araya2.png'],
+      images: ['/Nueva-araya3.webp', '/Nueva-araya.webp', '/Nueva-araya2.webp'],
       details: [
         'Modernización de instalaciones',
         'Mejoras en infraestructura',
@@ -201,6 +200,25 @@ const Projects = () => {
       ],
       pdfUrl: '/pdfs/Araya2.3.pdf',
       videoUrl: 'https://youtu.be/tJ03m6y4gO8',
+    },
+    {
+      id: 13,
+      title: 'Comedor Apure',
+      category: 'Infraestructura Social',
+      location: 'Apure, Venezuela',
+      area: '120 m²',
+      duration: '4 meses',
+      description: 'Construcción y adecuación de comedor social para la comunidad, incluyendo instalaciones sanitarias, cocina equipada, áreas de comedor y espacios de servicio.',
+      images: ['/comedor-apure.webp', '/Comedor-apure2.webp', '/Comedor-apure3.webp', '/Comedor-apure4.webp'],
+      details: [
+        'Construcción de infraestructura completa',
+        'Instalación de cocina equipada',
+        'Áreas de comedor y servicio',
+        'Instalaciones sanitarias',
+        'Sistema eléctrico y de ventilación'
+      ],
+      pdfUrl: '/pdfs/COMEDOR APURE.pdf',
+      videoUrl: 'https://youtu.be/iZCa8Ksvbjg',
     }
   ];
 
@@ -275,26 +293,13 @@ const Projects = () => {
         </div>
 
         <div ref={gridRef} className="max-w-7xl mx-auto">
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 justify-items-center">
-            {projects.map((project, index) => {
+          {/* Renderizar todos los proyectos usando un solo map */}
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {projects.slice(0, projects.length - 3).map((project) => {
               const currentIndex = cardImageIndex[project.id] || 0;
-              const isLastTwo = index >= projects.length - 2;
-              
-              // Para los últimos 2 proyectos: los posicionamos para que queden centrados
-              // En un grid de 4 columnas, los últimos 2 proyectos deben empezar en columna 2
-              let gridClass = '';
-              if (isLastTwo) {
-                // Si es el penúltimo proyecto, empieza en columna 2
-                // Si es el último proyecto, empieza en columna 3
-                if (index === projects.length - 2) {
-                  gridClass = 'lg:col-start-2';
-                } else if (index === projects.length - 1) {
-                  gridClass = 'lg:col-start-3';
-                }
-              }
               
               return (
-                <div key={project.id} className={`project-card group relative bg-dark-50 border border-gray-800 hover:border-brand-500/50 rounded-2xl overflow-hidden cursor-pointer transition-all duration-500 card-hover ${gridClass}`}
+                <div key={project.id} className="project-card group relative bg-dark-50 border border-gray-800 hover:border-brand-500/50 rounded-2xl overflow-hidden cursor-pointer transition-all duration-500 card-hover"
                   onClick={() => { setSelectedProject(project); setCurrentImageIndex(0); }}>
                   <div className="relative h-48 overflow-hidden">
                     <img src={project.images[currentIndex]} alt={project.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
@@ -330,9 +335,54 @@ const Projects = () => {
                 </div>
               );
             })}
+            
+            {/* Últimos 3 proyectos centrados en una fila separada */}
+            <div className="lg:col-span-4">
+              <div className="grid grid-cols-3 gap-6 lg:w-9/12 lg:mx-auto">
+                {projects.slice(projects.length - 3).map((project) => {
+                  const currentIndex = cardImageIndex[project.id] || 0;
+                  
+                  return (
+                    <div key={project.id} className="project-card group relative bg-dark-50 border border-gray-800 hover:border-brand-500/50 rounded-2xl overflow-hidden cursor-pointer transition-all duration-500 card-hover"
+                      onClick={() => { setSelectedProject(project); setCurrentImageIndex(0); }}>
+                      <div className="relative h-48 overflow-hidden">
+                        <img src={project.images[currentIndex]} alt={project.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                        <div className="absolute inset-0 project-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                        {project.images.length > 1 && (
+                          <div className="absolute top-3 right-3 bg-dark/80 text-white px-2 py-1 rounded text-xs font-medium backdrop-blur-sm">
+                            {currentIndex + 1}/{project.images.length}
+                          </div>
+                        )}
+                        {project.images.length > 1 && (
+                          <>
+                            <button onClick={(e) => prevImage(project.id, e)} className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-dark/80 hover:bg-brand-500 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 backdrop-blur-sm z-10">
+                              <ChevronLeft className="w-5 h-5 text-white" />
+                            </button>
+                            <button onClick={(e) => nextImage(project.id, e)} className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-dark/80 hover:bg-brand-500 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 backdrop-blur-sm z-10">
+                              <ChevronRight className="w-5 h-5 text-white" />
+                            </button>
+                          </>
+                        )}
+                        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                          <div className="w-12 h-12 bg-brand-500 rounded-full flex items-center justify-center shadow-glow">
+                            <ExternalLink className="w-5 h-5 text-white" />
+                          </div>
+                        </div>
+                      </div>
+                      <div className="p-4">
+                        <h3 className="text-white font-semibold mb-2 line-clamp-2 group-hover:text-brand-500 transition-colors">{project.title}</h3>
+                        <div className="flex items-center gap-1 text-gray-400 text-sm">
+                          <MapPin className="w-4 h-4 text-brand-500" />
+                          <span className="truncate">{project.location}</span>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
           </div>
         </div>
-
       </div>
 
       {/* Project Detail Modal */}
@@ -418,7 +468,6 @@ const Projects = () => {
           )}
         </DialogContent>
       </Dialog>
-
     </section>
   );
 };

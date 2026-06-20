@@ -477,6 +477,7 @@ function KanbanBoard({ projectId }: KanbanBoardProps) {
                             ref={dragProvided.innerRef}
                             {...dragProvided.draggableProps}
                             {...dragProvided.dragHandleProps}
+                            style={dragProvided.draggableProps.style as React.CSSProperties}
                             onClick={() => {
                               setDetailTaskId(task.id);
                               setShowDetailDialog(true);
