@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Script para convertir imágenes a formato WebP
-# Requiere: ImageMagick (convert) o cwebp
+# Requiere: cwebp (parte de libwebp)
 
 echo "=== Conversión de imágenes a WebP ==="
 echo ""
@@ -36,8 +36,8 @@ IMAGES=(
     
     # Proyecto 7: Subestación Casanay
     "Casanay_portada.png"
-    "project-subestacion-manzanares.jpg" # Reutilizada
-    "project-subestacion2.jpg" # Reutilizada
+    "project-subestacion-manzanares.jpg"
+    "project-subestacion2.jpg"
     
     # Proyecto 8: Estacionamiento Sede CORPOELEC
     "Estacionamiento1.png"
@@ -60,14 +60,14 @@ IMAGES=(
     "Comedor-apure4.jpg"
 )
 
-# Verificar si ImageMagick está instalado
-if ! command -v convert &> /dev/null; then
-    echo "⚠️  ImageMagick no está instalado."
-    echo "Instala con: brew install imagemagick (macOS) o apt-get install imagemagick (Ubuntu)"
+# Verificar si cwebp está instalado
+if ! command -v cwebp &> /dev/null; then
+    echo "⚠️  cwebp no está instalado."
+    echo "Instala con: brew install webp (macOS) o apt-get install webp (Ubuntu)"
     exit 1
 fi
 
-echo "✅ ImageMagick encontrado"
+echo "✅ cwebp encontrado"
 echo ""
 
 # Contadores
@@ -83,20 +83,19 @@ for img in "${IMAGES[@]}"; do
     if [ -f "$img" ]; then
         # Extraer nombre sin extensión
         filename="${img%.*}"
-        extension="${img##*.}"
         
         # Crear nombre de salida .webp
         output="${filename}.webp"
         
         echo "Convirtiendo: $img → $output"
         
-        # Convertir usando ImageMagick con calidad 85% (buena relación calidad/tamaño)
-        convert "$img" -quality 85 "$output"
+        # Convertir usando cwebp con calidad 85% (buena relación calidad/tamaño)
+        cwebp -q 85 "$img" -o "$output"
         
         if [ $? -eq 0 ]; then
             # Calcular reducción de tamaño
-            orig_size=$(stat -f%z "$img" 2>/dev/null || stat -c%s "$img" 2>/dev/null)
-            new_size=$(stat -f%z "$output" 2>/dev/null || stat -c%s "$output" 2>/dev/null)
+            orig_size=$(stat -c%s "$img" 2>/dev/null || stat -f%z "$img" 2>/dev/null)
+            new_size=$(stat -c%s "$output" 2>/dev/null || stat -f%z "$output" 2>/dev/null)
             reduction=$((100 - (new_size * 100 / orig_size)))
             
             echo "  ✅ Convertido: $orig_size bytes → $new_size bytes (-$reduction%)"
