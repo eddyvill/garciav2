@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       
-      - name: Setup Node.js
+      - name: Setup Node.js 20
         uses: actions/setup-node@v4
         with:
           node-version: '20'
@@ -46,11 +46,5 @@ jobs:
             cd app
             npm ci --frozen-lockfile
             npm run build
-            
-            # Reiniciar servidor web para limpiar cache
-            systemctl restart nginx || true
-            systemctl restart apache2 || true
-            service nginx restart || true
-            service apache2 restart || true
         env:
           DEPLOY_PATH: ${{ secrets.DEPLOY_PATH || '/var/www/garciaconstrucciones503' }}
