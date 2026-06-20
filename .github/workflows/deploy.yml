@@ -22,6 +22,12 @@ jobs:
           cd app
           npm ci --frozen-lockfile
           
+      - name: Convert images to WebP
+        run: |
+          cd app
+          chmod +x convert-to-webp.sh
+          bash convert-to-webp.sh
+          
       - name: Build
         run: |
           cd app
