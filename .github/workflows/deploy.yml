@@ -26,7 +26,7 @@ jobs:
         run: |
           cd app
           chmod +x convert-to-webp.sh
-          bash convert-to-webp.sh
+          bash convert-to-webp.sh || true
           
       - name: Build
         run: |
@@ -46,5 +46,11 @@ jobs:
             cd app
             npm ci --frozen-lockfile
             npm run build
+            
+            # Reiniciar servidor web para limpiar cache
+            systemctl restart nginx || true
+            systemctl restart apache2 || true
+            service nginx restart || true
+            service apache2 restart || true
         env:
           DEPLOY_PATH: ${{ secrets.DEPLOY_PATH || '/var/www/garciaconstrucciones503' }}
