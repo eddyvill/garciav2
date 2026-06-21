@@ -38,6 +38,7 @@ jobs:
             cd $DEPLOY_PATH
             git pull origin main
             cd app
+            rm -rf node_modules/.vite dist
             npm ci --frozen-lockfile
             npm run build
         env:
