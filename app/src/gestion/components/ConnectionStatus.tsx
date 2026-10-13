@@ -1,42 +1,32 @@
 import { useEffect, useState } from 'react';
 import { WifiOff } from 'lucide-react';
-import { supabase } from '../../lib/supabase';
 
 /**
- * Banner that shows when the Supabase connection is lost.
- * Pings Supabase every 30 seconds and shows/hides accordingly.
+ * Banner que muestra cuando el dispositivo del usuario pierde la conexión a internet.
+ * Usa eventos nativos del navegador sin sobrecargar la base de datos con pings.
  */
 function ConnectionStatus() {
-  const [isOffline, setIsOffline] = useState(false);
+  const [isOffline, setIsOffline] = useState(!navigator.onLine);
 
   useEffect(() => {
-    let intervalId: ReturnType<typeof setInterval>;
+    const handleOnline = () => setIsOffline(false);
+    const handleOffline = () => setIsOffline(true);
 
-    const checkConnection = async () => {
-      try {
-        // Simple ping: fetch a minimal query from profiles (RLS allows select for authenticated)
-        const { error } = await supabase.from('profiles').select('id').limit(1);
-        setIsOffline(!!error);
-      } catch {
-        setIsOffline(true);
-      }
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
     };
-
-    // Initial check
-    checkConnection();
-
-    // Poll every 30 seconds
-    intervalId = setInterval(checkConnection, 30_000);
-
-    return () => clearInterval(intervalId);
   }, []);
 
   if (!isOffline) return null;
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-[100] flex items-center justify-center gap-2 px-4 py-2 bg-red-600/90 backdrop-blur-sm text-white text-sm font-medium">
+    <div className="fixed top-0 left-0 right-0 z-[100] flex items-center justify-center gap-2 px-4 py-2 bg-amber-600/90 backdrop-blur-sm text-white text-sm font-medium">
       <WifiOff className="w-4 h-4 flex-shrink-0" />
-      <span>Sin conexión al servidor. Reintentando...</span>
+      <span>Sin conexión a internet en tu dispositivo.</span>
     </div>
   );
 }

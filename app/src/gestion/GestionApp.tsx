@@ -10,6 +10,7 @@ import EquipoList from './pages/EquipoList';
 import PerfilUsuario from './pages/PerfilUsuario';
 import ReportesView from './pages/ReportesView';
 import HistorialActividades from './pages/HistorialActividades';
+import CrmView from './pages/CrmView';
 import { useAuth } from './context/AuthContext';
 
 // ── Dashboard router by role ─────────────────────────────────────────
@@ -44,6 +45,7 @@ function GestionApp() {
       <Route element={<ProtectedRoute />}>
         <Route element={<GestionLayout />}>
           <Route index element={<DashboardByRole />} />
+          <Route path="crm" element={<CrmView />} />
           <Route path="proyectos" element={<ProyectosList />} />
           <Route path="proyectos/:id" element={<ProyectoDetalle />} />
           <Route path="equipo" element={<EquipoList />} />

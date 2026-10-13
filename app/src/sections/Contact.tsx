@@ -107,7 +107,7 @@ const Contact = () => {
     };
 
     try {
-      const res = await fetch('/send-mail.php', {
+      const res = await fetch('/api/leads', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
@@ -116,12 +116,12 @@ const Contact = () => {
       if (data.success) {
         setIsSubmitted(true);
         form.reset();
-        setTimeout(() => setIsSubmitted(false), 3000);
+        setTimeout(() => setIsSubmitted(false), 5000);
       } else {
-        alert('Error al enviar el mensaje. Intenta de nuevo.');
+        alert(data.error || 'Error al enviar el mensaje. Intenta de nuevo.');
       }
     } catch {
-      alert('Error al enviar el mensaje. Intenta de nuevo.');
+      alert('Error de conexión al enviar el mensaje. Intenta de nuevo.');
     } finally {
       setIsSubmitting(false);
     }

@@ -7,6 +7,7 @@ import ConnectionStatus from './ConnectionStatus';
 // ── Page title mapping ───────────────────────────────────────────────
 const pageTitles: Record<string, string> = {
   '/gestion': 'Dashboard',
+  '/gestion/crm': 'CRM & Clientes',
   '/gestion/proyectos': 'Proyectos',
   '/gestion/equipo': 'Equipo',
   '/gestion/perfil': 'Perfil',

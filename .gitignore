@@ -8,6 +8,12 @@ node_modules/
 .env.local
 .env.*.local
 
+# Database
+server/garcia.db*
+*.db
+*.db-wal
+*.db-shm
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

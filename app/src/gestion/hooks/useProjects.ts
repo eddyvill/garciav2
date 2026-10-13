@@ -1,12 +1,12 @@
 import { useEffect } from 'react';
-import { supabase } from '../../lib/supabase';
+import { api } from '../../lib/api';
 import type { Project, Task } from '../../lib/database.types';
 import { useProjectStore } from '../stores/projectStore';
 import { calculateProgress, getTaskCounts } from '../utils/calculations';
 
 /**
  * Fetches all projects, enriches with progress/task counts.
- * Only fetches if the store is empty (no projects loaded yet).
+ * Uses local API instead of Supabase.
  */
 export function useProjects() {
   const projects = useProjectStore((s) => s.projects);
@@ -15,7 +15,6 @@ export function useProjects() {
 
   useEffect(() => {
     const store = useProjectStore.getState();
-    // Skip if already loaded
     if (store.projects.length > 0) {
       if (store.loading) store.setLoading(false);
       return;
@@ -27,16 +26,14 @@ export function useProjects() {
 
     const fetchAll = async () => {
       try {
-        const [projRes, taskRes] = await Promise.all([
-          supabase.from('projects').select('*').order('created_at', { ascending: false }),
-          supabase.from('tasks').select('*'),
+        const [projData, taskData] = await Promise.all([
+          api.projects.getAll(),
+          api.tasks.getAll(),
         ]);
 
-        if (projRes.error) throw projRes.error;
-        if (taskRes.error) throw taskRes.error;
         if (!isMounted) return;
 
-        const allTasks = (taskRes.data ?? []) as Task[];
+        const allTasks = (taskData ?? []) as Task[];
         const tasksByProject = new Map<string, Task[]>();
         for (const t of allTasks) {
           const list = tasksByProject.get(t.project_id) ?? [];
@@ -44,8 +41,8 @@ export function useProjects() {
           tasksByProject.set(t.project_id, list);
         }
 
-        const enriched: Project[] = (projRes.data ?? []).map((row) => {
-          const p = row as Project;
+        const enriched: Project[] = (projData ?? []).map((row) => {
+          const p = row as unknown as Project;
           const pts = tasksByProject.get(p.id) ?? [];
           return { ...p, progress_percentage: calculateProgress(pts), task_counts: getTaskCounts(pts) };
         });

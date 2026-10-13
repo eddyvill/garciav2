@@ -7,6 +7,7 @@ import {
   History,
   LogOut,
   UserCircle,
+  UserCheck,
   X,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
@@ -23,6 +24,7 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   { label: 'Dashboard', to: '/gestion', icon: LayoutDashboard },
+  { label: 'CRM Clientes', to: '/gestion/crm', icon: UserCheck },
   { label: 'Proyectos', to: '/gestion/proyectos', icon: FolderKanban },
   { label: 'Equipo', to: '/gestion/equipo', icon: Users },
   {
