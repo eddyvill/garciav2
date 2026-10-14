@@ -74,7 +74,7 @@ export async function sendLeadNotification(lead) {
   if (resendApiKey) {
     try {
       let targetRecipient = process.env.NOTIFICATION_EMAIL || 'info@garciaconstrucciones503.com';
-      const fromAddress = process.env.EMAIL_FROM || 'García Construcciones <onboarding@resend.dev>';
+      const fromAddress = process.env.EMAIL_FROM || 'García Construcciones 503 <notificaciones@garciaconstrucciones503.com>';
       const subject = `🚨 Nuevo Contacto Web: ${lead.name}${lead.company ? ` (${lead.company})` : ''}`;
 
       const sendTo = async (recipient) => {
