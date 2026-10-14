@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import dotenv from 'dotenv';
 import { db, initDatabase } from './db.js';
+import { sendLeadNotification } from './mailer.js';
 
 dotenv.config();
 
@@ -122,6 +123,18 @@ app.post('/api/leads', (req, res) => {
       INSERT INTO activity_log (entity_type, entity_id, action, performed_by)
       VALUES ('lead', ?, 'Nuevo contacto recibido desde la web', 'Sistema Web')
     `).run(result.lastInsertRowid.toString());
+
+    // Send email notification in background (non-blocking)
+    sendLeadNotification({
+      id: result.lastInsertRowid,
+      name: leadName,
+      email: leadEmail,
+      phone: phone || '',
+      company: company || '',
+      message: message || 'Contacto web general',
+    }).catch((mailErr) => {
+      console.error('[Mailer] Error en envío en segundo plano:', mailErr);
+    });
 
     res.status(201).json({
       success: true,
