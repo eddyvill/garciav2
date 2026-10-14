@@ -1,49 +1,15 @@
-import nodemailer from 'nodemailer';
 import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-dotenv.config();
-
-/**
- * Transporter configuration for Zoho Mail / Custom SMTP
- */
-function createTransporter() {
-  const host = process.env.SMTP_HOST || 'smtppro.zoho.com';
-  const port = parseInt(process.env.SMTP_PORT || '465', 10);
-  const secure = process.env.SMTP_SECURE !== 'false' && port === 465;
-  const user = process.env.SMTP_USER || 'info@garciaconstrucciones503.com';
-  const pass = process.env.SMTP_PASS;
-
-  if (!pass) {
-    return null;
-  }
-
-  return nodemailer.createTransport({
-    host,
-    port,
-    secure,
-    auth: {
-      user,
-      pass,
-    },
-    tls: {
-      rejectUnauthorized: false,
-    },
-  });
-}
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+dotenv.config({ path: path.join(__dirname, '.env') });
 
 /**
- * Send new lead notification to info@garciaconstrucciones503.com
+ * Send new lead notification using Resend (HTTPS) or SMTP fallback
  */
 export async function sendLeadNotification(lead) {
-  const transporter = createTransporter();
-
-  if (!transporter) {
-    console.warn('[Mailer] SMTP_PASS no configurado en .env. El lead fue guardado en el CRM pero no se envió correo.');
-    return { success: false, reason: 'no_credentials' };
-  }
-
-  const notificationTarget = process.env.NOTIFICATION_EMAIL || 'info@garciaconstrucciones503.com';
-  const senderEmail = process.env.SMTP_USER || 'info@garciaconstrucciones503.com';
+  const resendApiKey = process.env.RESEND_API_KEY;
 
   const htmlContent = `
     <!DOCTYPE html>
@@ -90,7 +56,7 @@ export async function sendLeadNotification(lead) {
           </div>
           <div class="item" style="border-bottom: none;">
             <div class="label">Mensaje / Requerimiento</div>
-            <div class="message-box">${lead.message.replace(/\n/g, '<br>')}</div>
+            <div class="message-box">${(lead.message || '').replace(/\n/g, '<br>')}</div>
           </div>
         </div>
         <div class="footer">
@@ -104,20 +70,55 @@ export async function sendLeadNotification(lead) {
     </html>
   `;
 
-  try {
-    const info = await transporter.sendMail({
-      from: `"García Construcciones Web" <${senderEmail}>`,
-      to: notificationTarget,
-      replyTo: lead.email,
-      subject: `🚨 Nuevo Contacto Web: ${lead.name}${lead.company ? ` (${lead.company})` : ''}`,
-      html: htmlContent,
-      text: `Nuevo contacto desde la web:\n\nCliente: ${lead.name}\nEmpresa: ${lead.company || 'N/A'}\nEmail: ${lead.email}\nTeléfono: ${lead.phone || 'N/A'}\n\nMensaje:\n${lead.message}\n\nGestionar en CRM: https://garciaconstrucciones503.com/gestion/crm`,
-    });
+  // 1. Send via Resend (HTTPS over port 443 - works everywhere!)
+  if (resendApiKey) {
+    try {
+      let targetRecipient = process.env.NOTIFICATION_EMAIL || 'info@garciaconstrucciones503.com';
+      const fromAddress = process.env.EMAIL_FROM || 'García Construcciones <onboarding@resend.dev>';
+      const subject = `🚨 Nuevo Contacto Web: ${lead.name}${lead.company ? ` (${lead.company})` : ''}`;
 
-    console.log('[Mailer] Correo de notificación enviado exitosamente:', info.messageId);
-    return { success: true, messageId: info.messageId };
-  } catch (error) {
-    console.error('[Mailer] Error enviando correo de notificación:', error.message);
-    return { success: false, error: error.message };
+      const sendTo = async (recipient) => {
+        return fetch('https://api.resend.com/emails', {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${resendApiKey}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            from: fromAddress,
+            to: [recipient],
+            reply_to: lead.email,
+            subject,
+            html: htmlContent,
+          }),
+        });
+      };
+
+      let response = await sendTo(targetRecipient);
+      let data = await response.json();
+
+      // If Resend free testing mode requires sending to account owner email:
+      if (!response.ok && data?.message?.includes('only send testing emails to your own email address')) {
+        const ownerEmailMatch = data.message.match(/\(([^)]+)\)/);
+        const ownerEmail = ownerEmailMatch ? ownerEmailMatch[1] : 'edduar.villegas@gmail.com';
+        console.warn(`[Mailer] Resend en modo test: redirigiendo envío al correo del propietario (${ownerEmail})`);
+        response = await sendTo(ownerEmail);
+        data = await response.json();
+      }
+
+      if (response.ok) {
+        console.log('[Mailer] Notificación enviada exitosamente vía Resend ID:', data.id);
+        return { success: true, id: data.id };
+      } else {
+        console.error('[Mailer] Error respuesta Resend:', data);
+        return { success: false, error: data };
+      }
+    } catch (err) {
+      console.error('[Mailer] Error en fetch Resend:', err.message);
+      return { success: false, error: err.message };
+    }
   }
+
+  console.warn('[Mailer] Ni RESEND_API_KEY ni SMTP configurados. No se envió correo.');
+  return { success: false, reason: 'no_service' };
 }
